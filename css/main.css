@@ -1938,7 +1938,9 @@ html.is-modal-open body {
     position: relative;
     background: var(--cream-dark);
     margin: clamp(1.5rem, 4vw, 2.75rem) 0;
-    contain: layout style;
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 540px;
     overflow: visible;
 }
 .services-hscroll__pin {
@@ -2019,6 +2021,10 @@ html.is-modal-open body {
 .services-hscroll.is-dragging .service-card__body {
     box-shadow: none;
 }
+.services-hscroll.is-entrance-active .service-card__inner,
+.services-hscroll.is-entrance-active .service-card {
+    will-change: transform;
+}
 .services-hscroll.is-dragging .service-card__diagram-label,
 .services-hscroll.is-dragging .service-card__sigla,
 .services-hscroll.is-dragging .service-card__title {
@@ -2076,13 +2082,6 @@ html.is-modal-open body {
     padding-top: var(--services-tab-h);
     transform-origin: center calc(var(--services-tab-h) * 0.5);
     transform: translate3d(0, 0, 0);
-}
-.services-hscroll.is-dragging .service-card.is-swinging .service-card__inner,
-.services-hscroll.is-dragging .service-card.is-swinging .service-card__hole-connector,
-.services-hscroll .service-card.is-swinging .service-card__inner,
-.services-hscroll .service-card.is-swinging .service-card__hole-connector {
-    will-change: transform;
-    backface-visibility: hidden;
 }
 .services-hscroll .service-card__connector,
 .services-hscroll .service-card__hole-connector {
@@ -2142,7 +2141,7 @@ html.is-modal-open body {
     overflow: hidden;
     background: var(--white);
     border: 1px solid rgba(26, 26, 26, 0.08);
-    box-shadow: 0 8px 20px rgba(26, 26, 26, 0.05);
+    box-shadow: 0 4px 14px rgba(26, 26, 26, 0.04);
     position: relative;
     z-index: 1;
 }

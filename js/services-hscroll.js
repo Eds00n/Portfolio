@@ -143,7 +143,10 @@
             return null;
         }
         if (window.matchMedia('(max-width: 767px)').matches) {
+            gsap.set(cards, { x: '0%' });
+            cardLayout.forEach(({ inner, holeConnector, card }) => finishCardEntrance(card, inner, holeConnector, true));
             section.dataset.entranceReady = 'true';
+            onReady?.();
             return null;
         }
 
@@ -154,9 +157,9 @@
         cardLayout.forEach(({ inner, holeConnector }) => {
             if (inner) {
                 setCardSwingOrigin(inner, viewport);
-                gsap.set(inner, { rotation: -8 });
+                gsap.set(inner, { rotation: -4 });
             }
-            if (holeConnector) gsap.set(holeConnector, { rotation: 8 });
+            if (holeConnector) gsap.set(holeConnector, { rotation: 4 });
         });
 
         const timelines = [];
@@ -166,7 +169,15 @@
         const tryEnableInteraction = () => {
             if (section.dataset.entranceReady === 'true') return;
             section.dataset.entranceReady = 'true';
+            section.classList.remove('is-entrance-active');
             onReady?.();
+        };
+
+        const finishEntranceImmediate = () => {
+            timelines.forEach((tl) => tl.progress(1).kill());
+            gsap.set(cards, { x: '0%' });
+            cardLayout.forEach(({ inner, holeConnector, card }) => finishCardEntrance(card, inner, holeConnector, true));
+            tryEnableInteraction();
         };
 
         cards.forEach((card, index) => {
@@ -174,19 +185,19 @@
             const holeConnector = cardLayout[index]?.holeConnector;
             if (!inner) return;
 
-            const stagger = index * 0.2;
+            const stagger = index * 0.08;
             const cardTl = gsap.timeline({
                 paused: true,
                 onComplete: () => {
-                    finishCardEntrance(card, inner, holeConnector);
+                    finishCardEntrance(card, inner, holeConnector, true);
                 }
             });
 
             cardTl
                 .to(card, {
                     x: '0%',
-                    duration: 1.5,
-                    ease: 'power3.inOut',
+                    duration: 0.72,
+                    ease: 'power2.out',
                     delay: stagger,
                     overwrite: 'auto',
                     onComplete: () => {
@@ -195,61 +206,89 @@
                     }
                 })
                 .to(inner, {
-                    rotation: 8,
-                    duration: 0.5,
+                    rotation: 0,
+                    duration: 0.45,
                     ease: 'power2.out',
                     overwrite: 'auto'
-                }, '-=0.6')
-                .to(inner, {
-                    rotation: 0,
-                    duration: 2,
-                    ease: 'elastic.out(1, 0.25)',
-                    overwrite: 'auto'
-                });
+                }, '-=0.35');
 
             if (holeConnector) {
-                cardTl
-                    .to(holeConnector, {
-                        rotation: -8,
-                        duration: 0.5,
-                        ease: 'power2.out',
-                        overwrite: 'auto'
-                    }, '-=2.6')
-                    .to(holeConnector, {
-                        rotation: 0,
-                        duration: 1.5,
-                        ease: 'elastic.out(1, 0.35)',
-                        overwrite: 'auto'
-                    }, '-=2');
+                cardTl.to(holeConnector, {
+                    rotation: 0,
+                    duration: 0.4,
+                    ease: 'power2.out',
+                    overwrite: 'auto'
+                }, '-=0.45');
             }
 
             timelines.push(cardTl);
         });
 
         let entranceStarted = false;
+        let scrollIdleTimer = null;
+        let scrollActive = false;
+
+        const markScrollActivity = () => {
+            scrollActive = true;
+            window.clearTimeout(scrollIdleTimer);
+            scrollIdleTimer = window.setTimeout(() => {
+                scrollActive = false;
+            }, 140);
+        };
+
+        window.addEventListener('wheel', markScrollActivity, { passive: true });
+        window.addEventListener('touchmove', markScrollActivity, { passive: true });
+        window.__lenis?.on?.('scroll', markScrollActivity);
+
+        const waitForScrollIdle = (callback) => {
+            const attempt = () => {
+                if (scrollActive) {
+                    window.requestAnimationFrame(attempt);
+                    return;
+                }
+                callback();
+            };
+            attempt();
+        };
 
         const playEntrance = () => {
             if (entranceStarted || !timelines.length) return;
+            if (section.dataset.entranceReady === 'true') return;
+
             entranceStarted = true;
+            section.classList.add('is-entrance-active');
             timelines.forEach((tl) => tl.play(0));
+        };
+
+        const scheduleEntrance = () => {
+            waitForScrollIdle(playEntrance);
         };
 
         ScrollTrigger.create({
             trigger: track,
-            start: 'top 85%',
+            start: 'top 82%',
             once: true,
-            onEnter: playEntrance
+            onEnter: scheduleEntrance
         });
 
         const maybePlayEntrance = () => {
             const rect = track.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
-                playEntrance();
+            if (rect.top < window.innerHeight * 0.82 && rect.bottom > 0) {
+                scheduleEntrance();
             }
         };
 
         requestAnimationFrame(maybePlayEntrance);
         window.addEventListener('load', maybePlayEntrance, { once: true });
+
+        if ('IntersectionObserver' in window) {
+            const abortObserver = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) return;
+                if (!entranceStarted || section.dataset.entranceReady === 'true') return;
+                finishEntranceImmediate();
+            }, { threshold: 0.05 });
+            abortObserver.observe(section);
+        }
 
         return timelines;
     }
@@ -501,11 +540,6 @@
 
         gsap.set(track, { x: 0, force3D: true });
 
-        if (typeof Draggable !== 'undefined') {
-            destroyDraggableExtras = createDraggable();
-            draggable?.disable();
-        }
-
         ctx = gsap.context(() => {
             initServicesEntrance(section, track, cards, cardLayout, viewport, enableDragging);
         }, section);
@@ -551,13 +585,13 @@
                 if (!entry.isIntersecting) return;
                 io.disconnect();
                 start();
-            }, { rootMargin: '280px 0px', threshold: 0 });
+            }, { rootMargin: '80px 0px', threshold: 0.08 });
 
             io.observe(section);
 
             requestAnimationFrame(() => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight + 280 && rect.bottom > -280) {
+                if (rect.top < window.innerHeight + 80 && rect.bottom > -80) {
                     start();
                 }
             });
