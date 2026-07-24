@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview — Ponto de Pedido (curva suave · 1 ciclo)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,800;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f5f0e8;
+            --ink: #1a1a1a;
+            --ink-muted: rgba(26, 26, 26, 0.62);
+            --accent: #c45c3e;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-display: 'Instrument Serif', Georgia, serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            font-family: var(--font-sans);
+            background: var(--cream);
+            color: var(--ink);
+        }
+        .preview-banner {
+            max-width: 720px;
+            margin: 0 auto 1.5rem;
+            padding: 0.65rem 1rem;
+            border: 1px dashed rgba(26, 26, 26, 0.2);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+        .preview-banner strong { color: var(--accent); }
+        .reorder-demo {
+            max-width: min(720px, 100%);
+            margin: 0 auto;
+            text-align: left;
+        }
+        .svc-modal__demo-title {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin: 0 0 0.45rem;
+            text-align: center;
+        }
+        .svc-modal__demo-text {
+            margin: 0 auto 1rem;
+            max-width: 36rem;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--ink-muted);
+            text-align: center;
+        }
+        .reorder-demo__chart { margin: 0 0 1rem; }
+        .reorder-demo__chart svg {
+            display: block;
+            width: 100%;
+            max-height: 320px;
+            height: auto;
+        }
+        .reorder-demo__chart figcaption {
+            margin-top: 0.65rem;
+            font-size: 0.7rem;
+            color: rgba(26, 26, 26, 0.45);
+            text-align: center;
+        }
+        .reorder-demo__axis { stroke: rgba(26, 26, 26, 0.12); stroke-width: 1; }
+        .reorder-demo__safety-band { fill: rgba(26, 26, 26, 0.06); }
+        .reorder-demo__safety-line { stroke: rgba(26, 26, 26, 0.18); stroke-width: 1; stroke-dasharray: 2 4; }
+        .reorder-demo__pp-line { stroke: rgba(26, 26, 26, 0.42); stroke-width: 1.25; stroke-dasharray: 6 5; }
+        .reorder-demo__stock-line {
+            fill: none;
+            stroke: var(--ink);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .reorder-demo__trigger-dot { fill: var(--ink); stroke: var(--cream); stroke-width: 1.5; }
+        .reorder-demo__svg-y, .reorder-demo__svg-x { font-size: 9px; fill: rgba(26, 26, 26, 0.42); font-family: var(--font-sans); }
+        .reorder-demo__svg-axis-label { font-size: 8px; fill: rgba(26, 26, 26, 0.35); font-family: var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; }
+        .reorder-demo__svg-tag { font-size: 8px; fill: rgba(26, 26, 26, 0.45); font-family: var(--font-sans); }
+        .reorder-demo__svg-tag--pp { font-weight: 600; }
+        .reorder-demo__svg-callout { font-size: 8px; font-weight: 700; fill: var(--ink); font-family: var(--font-sans); letter-spacing: 0.03em; }
+        .reorder-demo__callout-line { fill: none; stroke: var(--ink); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0.75; }
+        .reorder-demo__legend {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-top: 0.25rem;
+            border-top: 1px solid rgba(26, 26, 26, 0.08);
+        }
+        .reorder-demo__pill { font-size: 0.76rem; line-height: 1.5; color: var(--ink-muted); }
+        .reorder-demo__pill strong { font-weight: 800; color: var(--ink); }
+        @media (max-width: 600px) {
+            .reorder-demo__legend { grid-template-columns: 1fr; }
+            .reorder-demo__svg-tag { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <p class="preview-banner">
+        <strong>Preview isolado</strong> — curva suave (cubic bezier) · 1 ciclo · ainda <em>não</em> integrado ao modal.
+        Abra este arquivo no navegador para validar antes de aplicar em <code>index.html</code>.
+    </p>
+
+    <section class="reorder-demo">
+        <h3 class="svc-modal__demo-title">Ponto de Pedido</h3>
+        <p class="svc-modal__demo-text">Quando o estoque atinge esse nível, é hora de repor — antes que falte.</p>
+
+        <figure class="reorder-demo__chart" aria-label="Gráfico de estoque com curva suave, um ciclo de reposição">
+            <svg viewBox="0 0 700 300" role="img" aria-hidden="true">
+                <defs>
+                    <marker id="reorder-callout-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M1 1 L7 4 L1 7" fill="none" stroke="#1a1a1a" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="260" x2="670" y2="260" class="reorder-demo__axis"/>
+                <line x1="40" y1="30" x2="40" y2="260" class="reorder-demo__axis"/>
+
+                <rect x="40" y="229" width="630" height="31" class="reorder-demo__safety-band"/>
+                <line x1="40" y1="229" x2="670" y2="229" class="reorder-demo__safety-line"/>
+                <text x="34" y="232" text-anchor="end" class="reorder-demo__svg-y">20</text>
+                <text x="676" y="248" class="reorder-demo__svg-tag">Estoque de segurança</text>
+
+                <line x1="40" y1="137" x2="670" y2="137" class="reorder-demo__pp-line"/>
+                <text x="34" y="141" text-anchor="end" class="reorder-demo__svg-y">80</text>
+                <text x="676" y="133" class="reorder-demo__svg-tag reorder-demo__svg-tag--pp">Ponto de pedido (PP)</text>
+
+                <!--
+                  1 ciclo: topo → desce suave → cruza PP (~dia 4) → mínimo (~dia 8) → repõe suave → desce leve até dia 30
+                  y(v) = 260 - v * (230/150)  |  x(d) ≈ 40 + d * 21
+                -->
+                <path
+                    d="M 40 45
+                       C 72 48, 98 98, 118 137
+                       C 138 168, 178 202, 205 206
+                       C 218 206, 238 62, 252 45
+                       C 390 40, 530 100, 670 168"
+                    class="reorder-demo__stock-line"
+                />
+
+                <g class="reorder-demo__callout">
+                    <polyline points="152,70 152,78 124,128" class="reorder-demo__callout-line" marker-end="url(#reorder-callout-arrow)"/>
+                    <text x="152" y="66" text-anchor="middle" class="reorder-demo__svg-callout">Ponto de Pedido</text>
+                </g>
+                <circle cx="118" cy="137" r="4" class="reorder-demo__trigger-dot"/>
+
+                <text x="34" y="34" text-anchor="end" class="reorder-demo__svg-y">150</text>
+                <text x="40" y="278" text-anchor="middle" class="reorder-demo__svg-x">0</text>
+                <text x="355" y="278" text-anchor="middle" class="reorder-demo__svg-x">15</text>
+                <text x="670" y="278" text-anchor="middle" class="reorder-demo__svg-x">30</text>
+                <text x="355" y="294" text-anchor="middle" class="reorder-demo__svg-axis-label">Dias</text>
+                <text x="14" y="145" text-anchor="middle" class="reorder-demo__svg-axis-label">Un.</text>
+            </svg>
+            <figcaption>Curva = estoque · tracejado = PP · faixa inferior = estoque de segurança · subida = reposição</figcaption>
+        </figure>
+
+        <div class="reorder-demo__legend">
+            <span class="reorder-demo__pill"><strong>Consumo</strong> 15 un/dia (queda contínua)</span>
+            <span class="reorder-demo__pill"><strong>PP</strong> dispara pedido ao cruzar 80 un</span>
+            <span class="reorder-demo__pill"><strong>Lead time</strong> 4 dias até a entrega chegar</span>
+        </div>
+    </section>
+</body>
+</html>

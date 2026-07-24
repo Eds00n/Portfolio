@@ -1,0 +1,14 @@
+node_modules/
+apps/*/node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# Legado na raiz (substituído por css/, js/, assets/)
+Barbersite.png.jpg
+EC CODE (4).png
+javascrp.js
+style.css
+projetos.html

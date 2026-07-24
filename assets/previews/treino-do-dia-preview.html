@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview — Treino do Dia (componentes)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/treino-do-dia.css">
+    <style>
+        :root {
+            --cream: #f0ebe3;
+            --ink: #1a1a1a;
+            --ink-muted: #5a5a5a;
+            --accent: #c45c3e;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-display: 'Inter', system-ui, sans-serif;
+            --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            font-family: var(--font-sans);
+            background: var(--cream);
+            color: var(--ink);
+        }
+        .preview-banner {
+            max-width: 720px;
+            margin: 0 auto 1.5rem;
+            padding: 0.65rem 1rem;
+            border: 1px dashed rgba(26, 26, 26, 0.2);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+            text-align: center;
+            line-height: 1.55;
+        }
+        .preview-banner strong { color: var(--accent); }
+        .preview-banner code { font-size: 0.85em; }
+        .svc-modal__demo {
+            max-width: min(720px, 100%);
+            margin: 0 auto;
+            text-align: left;
+        }
+        .svc-modal__demo-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin: 0 0 0.45rem;
+            text-align: center;
+        }
+        .svc-modal__demo-text {
+            margin: 0 auto 1rem;
+            max-width: 36rem;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--ink-muted);
+            text-align: center;
+        }
+        .preview-files {
+            max-width: 720px;
+            margin: 2rem auto 0;
+            padding: 1rem;
+            border-top: 1px solid rgba(26, 26, 26, 0.1);
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+            line-height: 1.6;
+        }
+        .preview-files ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+    </style>
+</head>
+<body>
+    <p class="preview-banner">
+        <strong>Preview isolado</strong> — componentes <code>TreinoDoDia</code> + <code>BonecoMuscular</code> ·
+        ainda <em>não</em> integrado ao modal Personal &amp; Fitness.
+    </p>
+
+    <section class="svc-modal__demo treino-demo">
+        <h3 class="svc-modal__demo-title">Treino do Dia</h3>
+        <p class="svc-modal__demo-text">O aluno vê o grupo muscular do dia e os exercícios — sem abrir outro app.</p>
+        <div id="treino-do-dia-root"></div>
+    </section>
+
+    <div class="preview-files">
+        <strong>Arquivos criados:</strong>
+        <ul>
+            <li><code>js/service-demos/treino-do-dia-data.js</code> — dados editáveis</li>
+            <li><code>js/service-demos/boneco-muscular.js</code> — SVG + highlight por região</li>
+            <li><code>js/service-demos/treino-do-dia.js</code> — montagem + estado (tabs)</li>
+            <li><code>css/treino-do-dia.css</code> — estilos do bloco</li>
+        </ul>
+    </div>
+
+    <script type="module">
+        import { initTreinoDoDia } from '../../js/service-demos/treino-do-dia.js';
+        initTreinoDoDia(document.getElementById('treino-do-dia-root'));
+    </script>
+</body>
+</html>

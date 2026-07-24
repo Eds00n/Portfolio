@@ -1,0 +1,151 @@
+/* Demo — Treino do Dia (Personal & Fitness) */
+
+.treino-do-dia__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 1.15rem;
+}
+
+.treino-do-dia__tab {
+    padding: 0.4rem 0.85rem;
+    border: 1px solid rgba(26, 26, 26, 0.14);
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.04);
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.treino-do-dia__tab:hover {
+    border-color: rgba(26, 26, 26, 0.28);
+    color: var(--ink);
+}
+
+.treino-do-dia__tab.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--cream);
+}
+
+.treino-do-dia__body {
+    display: grid;
+    grid-template-columns: minmax(120px, 160px) 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: center;
+    max-width: min(36rem, 100%);
+    margin: 0 auto;
+}
+
+.treino-do-dia__figure {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.boneco-muscular__svg {
+    display: block;
+    width: 100%;
+    max-width: 140px;
+    height: auto;
+}
+
+.boneco-muscular__part {
+    transition: fill 0.28s var(--ease), stroke 0.28s var(--ease);
+}
+
+.boneco-muscular__part--active {
+    fill: var(--ink);
+    stroke: var(--ink);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+}
+
+.boneco-muscular__part--idle {
+    fill: transparent;
+    stroke: rgba(26, 26, 26, 0.32);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+}
+
+.boneco-muscular__part--static {
+    fill: transparent;
+    stroke: rgba(26, 26, 26, 0.22);
+    stroke-width: 1.1;
+    stroke-linejoin: round;
+}
+
+.treino-do-dia__exercises {
+    text-align: left;
+}
+
+.treino-do-dia__exercises-label {
+    margin: 0 0 0.55rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
+
+.treino-do-dia__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    transition: opacity 0.22s var(--ease);
+}
+
+.treino-do-dia__list.is-fading {
+    opacity: 0;
+}
+
+.treino-do-dia__item {
+    position: relative;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--ink);
+}
+
+.treino-do-dia__item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.treino-do-dia__item-name {
+    font-weight: 700;
+}
+
+.treino-do-dia__item-eq {
+    color: var(--ink-muted);
+    font-weight: 400;
+}
+
+@media (max-width: 520px) {
+    .treino-do-dia__body {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .treino-do-dia__exercises {
+        text-align: left;
+    }
+
+    .boneco-muscular__svg {
+        max-width: 120px;
+        margin: 0 auto;
+    }
+}

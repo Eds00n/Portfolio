@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EC CODE | design with a human touch</title>
+    <meta name="description" content="Portfólio de Edson Cavalcante — desenvolvedor Full Stack. Projetos reais, serviços de web, apps e design com personalidade." />
+    <meta name="author" content="Edson Cavalcante" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://eds00n.github.io/Portfolio/" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="EC CODE" />
+    <meta property="og:title" content="EC CODE | design with a human touch" />
+    <meta property="og:description" content="Portfólio de Edson Cavalcante — desenvolvedor Full Stack. Projetos, serviços e contato direto." />
+    <meta property="og:url" content="https://eds00n.github.io/Portfolio/" />
+    <meta property="og:image" content="https://eds00n.github.io/Portfolio/assets/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EC CODE | design with a human touch" />
+    <meta name="twitter:description" content="Portfólio de Edson Cavalcante — desenvolvedor Full Stack." />
+    <meta name="twitter:image" content="https://eds00n.github.io/Portfolio/assets/og-image.svg" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Person",
+                "@id": "https://eds00n.github.io/Portfolio/#person",
+                "name": "Edson Cavalcante",
+                "url": "https://eds00n.github.io/Portfolio/",
+                "email": "mailto:edsoncavalcante400@gmail.com",
+                "jobTitle": "Full Stack Developer",
+                "sameAs": [
+                    "https://www.instagram.com/ec_code_",
+                    "https://github.com/eds00n"
+                ],
+                "alumniOf": [
+                    { "@type": "CollegeOrUniversity", "name": "IFAL" },
+                    { "@type": "CollegeOrUniversity", "name": "UNOPAR" }
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://eds00n.github.io/Portfolio/#website",
+                "url": "https://eds00n.github.io/Portfolio/",
+                "name": "EC CODE",
+                "description": "Portfólio pessoal de Edson Cavalcante",
+                "publisher": { "@id": "https://eds00n.github.io/Portfolio/#person" },
+                "inLanguage": "pt-BR"
+            },
+            {
+                "@type": "CreativeWork",
+                "name": "EC Routine",
+                "url": "https://white-lark-769069.hostingersite.com/auth.html?view=login",
+                "author": { "@id": "https://eds00n.github.io/Portfolio/#person" },
+                "description": "App web de rotinas e produtividade"
+            }
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/devices.css" />
+    <link rel="stylesheet" href="js/treino-do-dia/treino-do-dia.css" />
+</head>
+<body>
+    <header class="nav-header" id="header">
+        <a href="#inicio" class="nav-header__brand">EC CODE</a>
+        <button class="nav-header__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span>
+        </button>
+        <nav class="nav-header__menu" id="nav">
+            <a href="#inicio">Início</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#contato">Contato</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Majd-style — 2 telas (LS1: título + meta → LS2: Hey!) -->
+        <section class="hero-majd" id="inicio">
+            <div class="hero-majd__pin">
+                <div class="hero-majd__stack">
+                    <div class="hero-majd__screen hero-majd__screen--1" id="hero-section">
+                        <h1 class="hero-majd__title">
+                            <span class="line">full stack</span>
+                            <span class="line">developer</span>
+                        </h1>
+                    </div>
+
+                    <div class="hero-majd__screen hero-majd__screen--2" id="bio-section">
+                        <div class="hero-majd__intro">
+                            <div class="hero-majd__col hero-majd__col--left">
+                                <h2>Opa!</h2>
+                                <p>Sou Edson, dev full stack</p>
+                            </div>
+                            <div class="hero-majd__portrait-slot" aria-hidden="true"></div>
+                            <div class="hero-majd__col hero-majd__col--right">
+                                <div class="hero-majd__edu">
+                                    <p class="hero-majd__edu-title">Formação acadêmica</p>
+                                    <ul class="hero-majd__edu-list">
+                                        <li>Tecnologia em Logística — IFAL (cursando)</li>
+                                        <li>Sistemas de Informação — UNOPAR (cursando)</li>
+                                    </ul>
+                                </div>
+                                <p>Minha formação me dá uma visão ampla para criar sistemas que vão além da estética, resolvendo problemas reais — de e-commerce à automação de processos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-majd__portrait-wrap">
+                    <div class="hero-majd__portrait">
+                        <div class="hero-majd__portrait-face hero-majd__portrait-face--front">
+                            <img src="assets/portrait-edson.png" alt="Edson Cavalcante" />
+                        </div>
+                        <div class="hero-majd__portrait-face hero-majd__portrait-face--back" aria-hidden="true">
+                            <img src="assets/portrait-edson.png" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sobre mim — texto scroll-reveal -->
+        <section class="read-scroll" id="sobre" aria-label="Sobre mim">
+            <div class="read-scroll__inner">
+                <div class="read-scroll__content">
+                    <div class="read-scroll__label">SOBRE MIM</div>
+                    <p class="read-scroll__text" data-read-scroll>
+                        Olá, sou o Edson, desenvolvedor Full Stack. Transformo ideias em experiências digitais que unem design, performance e funcionalidade — fugindo do óbvio, com personalidade e impacto real.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projetos em destaque -->
+        <section class="featured-work" id="projetos" aria-label="Projetos">
+            <div class="wrap">
+                <header class="featured-work__header gsap-reveal">
+                    <h2 class="featured-work__title">Projetos</h2>
+                </header>
+                <div class="featured-work__grid" id="projectsGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- Serviços — arraste horizontal -->
+        <section class="services-hscroll" id="servicos" aria-label="Serviços">
+            <div class="services-hscroll__pin">
+                <div class="services-hscroll__inner">
+                    <header class="services-hscroll__head">
+                        <div class="services-hscroll__head-copy">
+                            <h2 class="services-hscroll__title">Serviços</h2>
+                            <p class="services-hscroll__intro">Do wireframe ao deploy — arraste para explorar cada área em que posso te ajudar.</p>
+                        </div>
+                        <p class="services-hscroll__hint">Arraste →</p>
+                    </header>
+                    <div class="services-hscroll__viewport" data-services-drag tabindex="0" role="region" aria-label="Carrossel de serviços — use as setas para navegar">
+                        <div class="services-hscroll__cord" aria-hidden="true"></div>
+                        <div class="services-hscroll__track">
+                            <article class="service-card service-card--ux" id="servico-ux">
+                                <div class="service-card__connector" aria-hidden="true"></div>
+                                <div class="service-card__hole">
+                                    <span class="service-card__hole-ellipse">
+                                        <span class="service-card__hole-connector" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="service-card__body">
+                                    <header class="service-card__hero">
+                                        <p class="service-card__sigla" aria-hidden="true">UX</p>
+                                    </header>
+                                    <div class="service-card__panel">
+                                        <p class="service-card__pretitle">Serviço</p>
+                                        <h3 class="service-card__title">Design de Interfaces</h3>
+                                        <div class="service-card__diagram">
+                                            <ul class="service-card__diagram-row service-card__diagram-row--top">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Rascunhos</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Protótipos</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Telas</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Guia visual</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                            </ul>
+                                            <div class="service-card__diagram-axis" aria-hidden="true"></div>
+                                            <ul class="service-card__diagram-row service-card__diagram-row--bottom">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Figma</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Etapas</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Interações</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Acessibilidade</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="service-card service-card--fro" id="servico-fro">
+                                <div class="service-card__connector" aria-hidden="true"></div>
+                                <div class="service-card__hole">
+                                    <span class="service-card__hole-ellipse">
+                                        <span class="service-card__hole-connector" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="service-card__body">
+                                    <header class="service-card__hero">
+                                        <p class="service-card__sigla" aria-hidden="true">FRO</p>
+                                    </header>
+                                    <div class="service-card__panel">
+                                        <p class="service-card__pretitle">Serviço</p>
+                                        <h3 class="service-card__title">Sites e Apps Web</h3>
+                                        <div class="service-card__diagram">
+                                            <ul class="service-card__diagram-row service-card__diagram-row--top">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Interativo</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Dinâmico</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Layout</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Responsivo</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                            </ul>
+                                            <div class="service-card__diagram-axis" aria-hidden="true"></div>
+                                            <ul class="service-card__diagram-row service-card__diagram-row--bottom">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Performance</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Estilo</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Gráficos</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Versionamento</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="service-card service-card--api" id="servico-api">
+                                <div class="service-card__connector" aria-hidden="true"></div>
+                                <div class="service-card__hole">
+                                    <span class="service-card__hole-ellipse">
+                                        <span class="service-card__hole-connector" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="service-card__body">
+                                    <header class="service-card__hero">
+                                        <p class="service-card__sigla" aria-hidden="true">API</p>
+                                    </header>
+                                    <div class="service-card__panel">
+                                        <p class="service-card__pretitle">Serviço</p>
+                                        <h3 class="service-card__title">Servidor e Dados</h3>
+                                        <div class="service-card__diagram">
+                                            <ul class="service-card__diagram-row service-card__diagram-row--top">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Servidor</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Rotas</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">APIs</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Login</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                            </ul>
+                                            <div class="service-card__diagram-axis" aria-hidden="true"></div>
+                                            <ul class="service-card__diagram-row service-card__diagram-row--bottom">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Banco</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Publicação</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Conexões</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Versionamento</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="service-card service-card--gfk" id="servico-gfk">
+                                <div class="service-card__connector" aria-hidden="true"></div>
+                                <div class="service-card__hole">
+                                    <span class="service-card__hole-ellipse">
+                                        <span class="service-card__hole-connector" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="service-card__body">
+                                    <header class="service-card__hero">
+                                        <p class="service-card__sigla" aria-hidden="true">GFK</p>
+                                    </header>
+                                    <div class="service-card__panel">
+                                        <p class="service-card__pretitle">Serviço</p>
+                                        <h3 class="service-card__title">Design Gráfico</h3>
+                                        <div class="service-card__diagram">
+                                            <ul class="service-card__diagram-row service-card__diagram-row--top">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Peças</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Ícones</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Materiais</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Marca</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                            </ul>
+                                            <div class="service-card__diagram-axis" aria-hidden="true"></div>
+                                            <ul class="service-card__diagram-row service-card__diagram-row--bottom">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Figma</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Fotos</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Vetorial</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Fontes</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="service-card service-card--mot" id="servico-mot">
+                                <div class="service-card__connector" aria-hidden="true"></div>
+                                <div class="service-card__hole">
+                                    <span class="service-card__hole-ellipse">
+                                        <span class="service-card__hole-connector" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="service-card__body">
+                                    <header class="service-card__hero">
+                                        <p class="service-card__sigla" aria-hidden="true">MOT</p>
+                                    </header>
+                                    <div class="service-card__panel">
+                                        <p class="service-card__pretitle">Serviço</p>
+                                        <h3 class="service-card__title">Animação Digital</h3>
+                                        <div class="service-card__diagram">
+                                            <ul class="service-card__diagram-row service-card__diagram-row--top">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Detalhes</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Transições</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Interfaces</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-label">Scroll</span><span class="service-card__diagram-pointer service-card__diagram-pointer--down" aria-hidden="true"></span></li>
+                                            </ul>
+                                            <div class="service-card__diagram-axis" aria-hidden="true"></div>
+                                            <ul class="service-card__diagram-row service-card__diagram-row--bottom">
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Animações</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Protótipos</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Leve</span></li>
+                                                <li class="service-card__diagram-cell"><span class="service-card__diagram-pointer service-card__diagram-pointer--up" aria-hidden="true"></span><span class="service-card__diagram-label">Ícones</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sites, sistemas e apps (exemplos por nicho) -->
+        <section class="services-detail wrap" id="servicos-detalhes" aria-label="Sites, sistemas e apps que desenvolvo">
+            <header class="services-detail__head">
+                <h2 class="services-detail__title">Sites, sistemas e apps que posso criar</h2>
+                <p class="services-detail__intro">Cada negócio pede uma abordagem diferente — da vitrine online ao painel interno ou app no celular. Veja exemplos do que posso montar.</p>
+            </header>
+            <div class="services-detail__grid">
+                <article class="services-detail__item" id="site-barbearia" data-nav-label="Barbearia" data-modal-src="content/modals/site-barbearia.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.2 8.2L20 20M8.2 15.8L20 4"/></svg></span>
+                        <p class="services-detail__label">Barbearia &amp; salão</p>
+                    </div>
+                    <h3>Agendamento e presença forte</h3>
+</article>
+                <article class="services-detail__item" id="site-fotografia" data-nav-label="Fotografia" data-modal-src="content/modals/site-fotografia.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8z"/><circle cx="12" cy="13" r="3.25"/></svg></span>
+                        <p class="services-detail__label">Fotografia</p>
+                    </div>
+                    <h3>Portfólio que vende o seu olhar</h3>
+</article>
+                <article class="services-detail__item" id="site-estoque" data-nav-label="Estoque" data-modal-src="content/modals/site-estoque.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9h18v11H3z"/><path d="M3 9l9-5 9 5"/><path d="M12 4v16"/></svg></span>
+                        <p class="services-detail__label">Controle de estoque</p>
+                    </div>
+                    <h3>Entrada, saída e alerta na hora certa</h3>
+</article>
+                <article class="services-detail__item" id="site-clinica" data-nav-label="Clínica" data-modal-src="content/modals/site-clinica.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-6.5-4.5-6.5-9.5A3.5 3.5 0 0 1 12 6.5 3.5 3.5 0 0 1 18.5 10.5C18.5 15.5 12 20 12 20z"/><path d="M8 12h1.5l1-2 1.5 4 1-2.5H15"/></svg></span>
+                        <p class="services-detail__label">Clínica &amp; consultório</p>
+                    </div>
+                    <h3>Confiança e informação na medida</h3>
+</article>
+                <article class="services-detail__item" id="site-loja" data-nav-label="Loja" data-modal-src="content/modals/site-loja.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V7a5 5 0 0 1 10 0v1"/><path d="M5 8h14l-1.2 12H6.2L5 8z"/></svg></span>
+                        <p class="services-detail__label">Loja &amp; e-commerce</p>
+                    </div>
+                    <h3>Vitrine que converte</h3>
+</article>
+                <article class="services-detail__item" id="site-personal" data-nav-label="Personal" data-modal-src="content/modals/site-personal.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9.5v5"/><path d="M6.5 7.5v9"/><path d="M6.5 12h11"/><path d="M17.5 7.5v9"/><path d="M20 9.5v5"/></svg></span>
+                        <p class="services-detail__label">Personal &amp; fitness</p>
+                    </div>
+                    <h3>Autoridade e planos sob medida</h3>
+</article>
+                <article class="services-detail__item" id="site-sistema" data-nav-label="Sistemas" data-modal-src="content/modals/site-sistema.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
+                        <p class="services-detail__label">Sistemas sob medida</p>
+                    </div>
+                    <h3>Painel pra rodar o negócio</h3>
+</article>
+                <article class="services-detail__item" id="site-app" data-nav-label="Apps" data-modal-src="content/modals/site-app.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></span>
+                        <p class="services-detail__label">Apps mobile</p>
+                    </div>
+                    <h3>No bolso do seu cliente</h3>
+</article>
+                <article class="services-detail__item" id="site-restaurante" data-nav-label="Restaurante" data-modal-src="content/modals/site-restaurante.html">
+                    <div class="services-detail__top">
+                        <span class="services-detail__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 11.5c0-3.3 2.7-6 7-6s7 2.7 7 6"/><path d="M4.5 13.5h15"/><path d="M5 16h14"/><path d="M6 18.5h12"/></svg></span>
+                        <p class="services-detail__label">Restaurante</p>
+                    </div>
+                    <h3>Cardápio claro e pedido fácil</h3>
+</article>
+            </div>
+        </section>
+
+        <!-- Numbered skills -->
+        <section class="numbered-skills" id="skillsRocket">
+            <div class="skills-rocket__sink-wrap" aria-hidden="true">
+                <div class="skills-rocket__sink" aria-hidden="true"></div>
+            </div>
+            <div class="wrap skills-rocket__layout">
+                <div class="skills-rocket__content skills-list">
+                <article class="num-skill">
+                    <h3>Desenvolvimento Web</h3>
+                    <p class="num-skill__tags">Sites • Landing Pages • Web Apps</p>
+                </article>
+                <article class="num-skill">
+                    <h3>Aplicativos Mobile</h3>
+                    <p class="num-skill__tags">Android • iOS • Cross-platform</p>
+                </article>
+                <article class="num-skill">
+                    <h3>Sistemas sob Medida</h3>
+                    <p class="num-skill__tags">Gestão • Automação • Integrações</p>
+                </article>
+                <article class="num-skill">
+                    <h3>Consultoria Técnica</h3>
+                    <p class="num-skill__tags">Arquitetura • Stack • Performance</p>
+                </article>
+                </div>
+                <div class="skills-rocket__visual" aria-hidden="true">
+                    <svg class="skills-rocket__svg" viewBox="0 0 200 800" preserveAspectRatio="xMidYMid meet" overflow="visible">
+                        <path id="skillsPath" d="M 110 880 L 110 153 A 80 80 0 0 1 190 78 L 420 78" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="10 10" stroke-linecap="round" />
+                    </svg>
+                    <div id="rocketShip" class="rocket-ship">
+                        <div class="rocket-ship__body">
+                            <img id="rocketRider" class="rocket-ship__rider" src="assets/images/rocket-edson.png" alt="Ilustração do Edson no foguete" width="531" height="470" loading="lazy" />
+                            <div class="rocket-ship__exhaust" aria-hidden="true">
+                                <div id="rocketFlameLottie" class="rocket-flame-lottie" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact" id="contato">
+            <div class="contact__backdrop-wrap" aria-hidden="true">
+                <div class="contact__backdrop" aria-hidden="true"></div>
+            </div>
+            <span class="contact__watermark" aria-hidden="true">EC CODE</span>
+            <div class="wrap contact__inner">
+                <div class="contact__intro" aria-hidden="true">
+                    <span class="contact__intro-text">EC CODE</span>
+                </div>
+                <h2 class="contact__big">Vamos trabalhar<br />juntos</h2>
+                <p class="contact__label">FALE COMIGO</p>
+                <a href="mailto:edsoncavalcante400@gmail.com" class="contact__email" data-track="contact" data-channel="email">edsoncavalcante400@gmail.com</a>
+                <div class="contact__social">
+                    <a href="mailto:edsoncavalcante400@gmail.com" class="contact__social-link" aria-label="E-mail" data-track="contact" data-channel="email">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                    </a>
+                    <a href="https://wa.me/5582996662271" class="contact__social-link contact__social-link--fill" target="_blank" rel="noopener" aria-label="WhatsApp" data-track="contact" data-channel="whatsapp">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.9-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.5-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.4 6.4 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.6c-.1-.2 0-.3.1-.4l.3-.4c.1-.1.1-.2.2-.3v-.3c-.1-.1 0-.2 0-.3s-.5-1.2-.7-1.6-.3-.4-.5-.3h-.5a1 1 0 0 0-.7.3 3.2 3.2 0 0 0-1 2.4 5.6 5.6 0 0 0 1.2 2.9 12.8 12.8 0 0 0 4.9 4.3 5.2 5.2 0 0 0 2.6.7 2.8 2.8 0 0 0 2.6-1.9 2.3 2.3 0 0 0 .2-1.1c0-.1-.1-.2-.3-.2z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/ec_code_" class="contact__social-link" target="_blank" rel="noopener" aria-label="Instagram" data-track="contact" data-channel="instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal preview -->
+    <div class="modal" id="projectModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal__backdrop" data-close-modal></div>
+        <div class="modal__panel">
+            <header class="modal__header">
+                <div class="modal__info">
+                    <h2 id="modalTitle" class="modal__title"></h2>
+                    <a href="#" id="modalLink" class="modal__link" target="_blank" rel="noopener">Abrir site ↗</a>
+                </div>
+                <div class="modal__actions">
+                    <button type="button" class="modal__device-toggle" id="deviceToggle" aria-label="Alternar para desktop">
+                        <svg class="icon-pc" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                        <svg class="icon-phone" viewBox="0 0 24 24" style="display:none" aria-hidden="true"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+                    </button>
+                    <button type="button" class="modal__close" id="modalClose" aria-label="Fechar">×</button>
+                </div>
+            </header>
+            <div class="modal__case" id="modalCase" hidden>
+                <dl class="modal__case-grid">
+                    <div><dt>Contexto</dt><dd id="modalContext"></dd></div>
+                    <div><dt>Stack</dt><dd id="modalStack"></dd></div>
+                    <div><dt>Desafio</dt><dd id="modalChallenge"></dd></div>
+                    <div><dt>Solução</dt><dd id="modalSolution"></dd></div>
+                    <div><dt>Resultado</dt><dd id="modalResult"></dd></div>
+                </dl>
+            </div>
+            <div class="modal__body">
+                <div class="device-view device-view--phone" id="phoneView">
+                    <div class="phone-frame" id="modalPhone" data-project-url="">
+                        <span class="phone-notch"></span>
+                        <span class="phone-button vol-up"></span>
+                        <span class="phone-button vol-down"></span>
+                        <div class="phone-screen">
+                            <img src="" alt="" class="phone-logo" id="modalPhoneLogo" />
+                            <div class="phone-iframe-wrap">
+                                <div class="phone-iframe-scaler">
+                                    <iframe class="phone-iframe" id="modalPhoneIframe" title="Preview mobile" data-src=""></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="device-view device-view--pc" id="pcView" hidden>
+                    <div class="pc-frame" id="modalPc" data-project-url="">
+                        <div class="pc-screen">
+                            <img src="" alt="" class="pc-logo" id="modalPcLogo" />
+                            <div class="pc-iframe-wrap">
+                                <iframe class="pc-iframe" id="modalPcIframe" title="Preview desktop" data-src=""></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal — tipos de site/sistema/app -->
+    <div class="svc-modal" id="serviceDetailModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="svcModalTitle">
+        <div class="svc-modal__backdrop" data-close-svc-modal></div>
+        <div class="svc-modal__panel" data-lenis-prevent>
+            <header class="svc-modal__header">
+                <div class="svc-modal__context" id="svcModalContext"></div>
+                <button type="button" class="svc-modal__close" id="svcModalClose" aria-label="Fechar">×</button>
+            </header>
+            <div class="svc-modal__body" id="svcModalBody" data-lenis-prevent tabindex="-1"></div>
+        </div>
+    </div>
+
+    <script src="js/site-config.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script src="js/devices.js"></script>
+    <script src="js/rocket-flame.js"></script>
+    <script src="js/services-hscroll.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>

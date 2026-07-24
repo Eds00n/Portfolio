@@ -1,0 +1,190 @@
+/* Molduras celular e PC — modal preview */
+
+/* Phone */
+.phone-frame {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 160px;
+    height: 300px;
+    border: 4px solid #000;
+    border-radius: 16px;
+    background: #f9fafb;
+    overflow: hidden;
+    transition: transform 0.35s ease;
+    transform-origin: center center;
+    cursor: pointer;
+    z-index: 1;
+}
+.phone-frame:hover {
+    transform: translateY(-10px) scale(1.45);
+    z-index: 10;
+}
+.phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 8px;
+    background: #000;
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+}
+.phone-button {
+    position: absolute;
+    right: -8px;
+    width: 4px;
+    border: 4px solid #000;
+    border-radius: 6px;
+    background: transparent;
+    z-index: 2;
+}
+.phone-button.vol-up { top: 56px; height: 28px; }
+.phone-button.vol-down { bottom: 144px; height: 40px; }
+
+.phone-screen {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+.phone-frame.active .phone-screen {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.phone-screen .phone-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.phone-frame.dark-logo:not(.active) .phone-screen .phone-logo {
+    filter: brightness(0);
+}
+.phone-iframe-wrap {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: auto;
+    background: #0a0a0a;
+    overflow: hidden;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+}
+.phone-frame.active .phone-screen .phone-iframe-wrap { display: flex; }
+.phone-iframe-scaler {
+    width: 375px;
+    height: 667px;
+    flex-shrink: 0;
+    transform: scale(0.427);
+    transform-origin: center center;
+}
+.phone-screen .phone-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+}
+.phone-frame.active .phone-screen .phone-logo { display: none; }
+.phone-frame.active .phone-screen .phone-iframe-wrap { transition: opacity 0.55s ease-out; }
+.phone-frame.active.phone-closing .phone-screen .phone-iframe-wrap { opacity: 0; }
+.phone-frame.active.phone-closing .phone-screen .phone-logo {
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.55s ease-out;
+    pointer-events: none;
+}
+.phone-frame.active.phone-closing .phone-screen .phone-logo.logo-fade-in { opacity: 1; }
+
+/* PC */
+.pc-frame {
+    position: relative;
+    width: 280px;
+    height: 175px;
+    background: #2a2a2a;
+    border-radius: 12px 12px 0 0;
+    border: 8px solid #1a1a1a;
+    border-bottom: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.35s ease;
+    transform-origin: center center;
+    z-index: 1;
+}
+.pc-frame:hover {
+    transform: translateY(-10px) scale(1.45);
+    z-index: 10;
+}
+.pc-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 18px;
+    background: #1a1a1a;
+    border-radius: 0 0 8px 8px;
+}
+.pc-screen {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+.pc-frame.active .pc-screen { padding: 0; }
+.pc-screen .pc-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.pc-frame.dark-logo:not(.active) .pc-screen .pc-logo { filter: brightness(0); }
+.pc-iframe-wrap {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: auto;
+    background: #fff;
+    border-radius: 4px;
+}
+.pc-frame.active .pc-screen .pc-iframe-wrap { display: block; transition: opacity 0.55s ease-out; }
+.pc-frame.active .pc-screen .pc-logo { display: none; }
+.pc-frame.active.pc-closing .pc-screen .pc-iframe-wrap { opacity: 0; }
+.pc-frame.active.pc-closing .pc-screen .pc-logo {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.55s ease-out;
+    pointer-events: none;
+}
+.pc-frame.active.pc-closing .pc-screen .pc-logo.pc-logo-fade-in { opacity: 1; }
+.pc-screen .pc-iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.modal.view-pc .icon-pc { display: none; }
+.modal.view-pc .icon-phone { display: block !important; }
+.modal:not(.view-pc) .icon-pc { display: block; }
+.modal:not(.view-pc) .icon-phone { display: none !important; }
+
+@media (max-width: 480px) {
+    .phone-frame { width: 140px; height: 260px; }
+    .phone-iframe-scaler { transform: scale(0.373); }
+    .pc-frame { width: 240px; height: 150px; }
+}

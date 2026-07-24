@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+@import './styles/delivery-animations.css';
+
+@theme {
+  --color-accent: #c45c3e;
+  --color-accent-hover: #b04f34;
+  --color-cream: #f0ebe3;
+  --color-cream-dark: #e5dfd6;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #5a5a5a;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}

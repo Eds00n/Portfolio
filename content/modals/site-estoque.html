@@ -1,0 +1,202 @@
+<p class="svc-modal__tag">Logística aplicada</p>
+                        <p class="svc-modal__lead">Sistema de estoque com conceitos de logística na prática — curva ABC, giro, ponto de reposição e inventário. Do depósito à prateleira, sem planilha perdida.</p>
+
+                        <section class="svc-modal__demo abc-demo">
+                            <h3 class="svc-modal__demo-title">Curva ABC</h3>
+                            <p class="svc-modal__demo-text">Método de Pareto aplicado ao estoque: classifica SKUs pelo valor (consumo ou vendas) e mostra onde está o dinheiro — e onde está encalhado.</p>
+
+                            <figure class="abc-demo__chart" aria-label="Gráfico demonstrativo da curva ABC com barras de valor e linha de percentual acumulado">
+                                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                                    <line x1="32" y1="148" x2="488" y2="148" class="abc-demo__axis"/>
+                                    <rect x="40" y="44" width="36" height="104" class="abc-demo__bar abc-demo__bar--a" rx="2"/>
+                                    <rect x="88" y="58" width="36" height="90" class="abc-demo__bar abc-demo__bar--a" rx="2"/>
+                                    <rect x="136" y="72" width="36" height="76" class="abc-demo__bar abc-demo__bar--a" rx="2"/>
+                                    <rect x="184" y="92" width="36" height="56" class="abc-demo__bar abc-demo__bar--b" rx="2"/>
+                                    <rect x="232" y="104" width="36" height="44" class="abc-demo__bar abc-demo__bar--b" rx="2"/>
+                                    <rect x="280" y="118" width="36" height="30" class="abc-demo__bar abc-demo__bar--c" rx="2"/>
+                                    <rect x="328" y="126" width="36" height="22" class="abc-demo__bar abc-demo__bar--c" rx="2"/>
+                                    <rect x="376" y="134" width="36" height="14" class="abc-demo__bar abc-demo__bar--c" rx="2"/>
+                                    <rect x="424" y="140" width="36" height="8" class="abc-demo__bar abc-demo__bar--c" rx="2"/>
+                                    <polyline points="58,52 106,66 154,80 202,100 250,114 298,128 346,136 394,142 442,146" class="abc-demo__line"/>
+                                    <line x1="32" y1="80" x2="488" y2="80" class="abc-demo__guide"/>
+                                    <text x="494" y="84" class="abc-demo__svg-pct">80%</text>
+                                    <text x="58" y="164" text-anchor="middle" class="abc-demo__svg-sku">P1</text>
+                                    <text x="154" y="164" text-anchor="middle" class="abc-demo__svg-sku">P3</text>
+                                    <text x="442" y="164" text-anchor="middle" class="abc-demo__svg-sku">P8</text>
+                                    <text x="100" y="28" text-anchor="middle" class="abc-demo__zone abc-demo__zone--a">A</text>
+                                    <text x="208" y="28" text-anchor="middle" class="abc-demo__zone abc-demo__zone--b">B</text>
+                                    <text x="370" y="28" text-anchor="middle" class="abc-demo__zone abc-demo__zone--c">C</text>
+                                </svg>
+                                <figcaption>Barras = valor · linha = % acumulado</figcaption>
+                            </figure>
+
+                            <div class="abc-demo__legend">
+                                <span class="abc-demo__pill abc-demo__pill--a"><strong>A</strong> ~80% do valor · ~20% dos itens · controle rigoroso</span>
+                                <span class="abc-demo__pill abc-demo__pill--b"><strong>B</strong> ~15% do valor · ~30% dos itens · controle moderado</span>
+                                <span class="abc-demo__pill abc-demo__pill--c"><strong>C</strong> ~5% do valor · ~50% dos itens · controle simplificado</span>
+                            </div>
+
+                            <div class="abc-demo__example">
+                                <p class="abc-demo__example-title">Exemplo prático</p>
+                                <table class="abc-demo__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th>Valor/mês</th>
+                                            <th>% acum.</th>
+                                            <th>Classe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Parafuso M8</td>
+                                            <td>R$ 4.200</td>
+                                            <td>42%</td>
+                                            <td><span class="abc-demo__class abc-demo__class--a">A</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tinta branca 18L</td>
+                                            <td>R$ 2.800</td>
+                                            <td>70%</td>
+                                            <td><span class="abc-demo__class abc-demo__class--a">A</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fita isolante</td>
+                                            <td>R$ 1.100</td>
+                                            <td>81%</td>
+                                            <td><span class="abc-demo__class abc-demo__class--a">A</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lixa fina</td>
+                                            <td>R$ 620</td>
+                                            <td>87%</td>
+                                            <td><span class="abc-demo__class abc-demo__class--b">B</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Capa plástica</td>
+                                            <td>R$ 180</td>
+                                            <td>99%</td>
+                                            <td><span class="abc-demo__class abc-demo__class--c">C</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="abc-demo__how">
+                                <p class="abc-demo__how-title">Como funciona no sistema</p>
+                                <ol class="abc-demo__steps">
+                                    <li><strong>Coleta dados</strong> — entradas, saídas e vendas por SKU no período escolhido.</li>
+                                    <li><strong>Ranking</strong> — ordena produtos do maior pro menor valor (ou giro).</li>
+                                    <li><strong>Acumula %</strong> — calcula o percentual acumulado até cruzar 80% e 95%.</li>
+                                    <li><strong>Classifica</strong> — A até ~80%, B até ~95%, resto é C.</li>
+                                    <li><strong>Agir</strong> — A repõe rápido e inventaria sempre; B no ritmo normal; C compra sob demanda.</li>
+                                </ol>
+                            </div>
+                        </section>
+
+                        <section class="svc-modal__demo reorder-demo">
+                            <h3 class="svc-modal__demo-title">Ponto de Pedido</h3>
+                            <p class="svc-modal__demo-text">Quando o estoque atinge esse nível, é hora de repor — antes que falte.</p>
+
+                            <figure class="reorder-demo__chart" aria-label="Gráfico de nível de estoque ao longo de 30 dias com ponto de pedido e estoque de segurança">
+                                <svg viewBox="0 0 700 300" role="img" aria-hidden="true">
+                                    <defs>
+                                        <marker id="reorder-callout-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+                                            <path d="M1 1 L7 4 L1 7" fill="none" stroke="#1a1a1a" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </marker>
+                                    </defs>
+                                    <!-- Eixos -->
+                                    <line x1="40" y1="260" x2="670" y2="260" class="reorder-demo__axis"/>
+                                    <line x1="40" y1="30" x2="40" y2="260" class="reorder-demo__axis"/>
+
+                                    <!-- Estoque de segurança (0–20 un) -->
+                                    <rect x="40" y="229" width="630" height="31" class="reorder-demo__safety-band"/>
+                                    <line x1="40" y1="229" x2="670" y2="229" class="reorder-demo__safety-line"/>
+                                    <text x="34" y="232" text-anchor="end" class="reorder-demo__svg-y">20</text>
+                                    <text x="676" y="248" class="reorder-demo__svg-tag reorder-demo__svg-tag--ss">Estoque de segurança</text>
+
+                                    <!-- Ponto de pedido (80 un) -->
+                                    <line x1="40" y1="137" x2="670" y2="137" class="reorder-demo__pp-line"/>
+                                    <text x="34" y="141" text-anchor="end" class="reorder-demo__svg-y">80</text>
+                                    <text x="676" y="133" class="reorder-demo__svg-tag reorder-demo__svg-tag--pp">Ponto de pedido (PP)</text>
+
+                                    <!-- Linha de estoque — 1 ciclo, curva suave (cubic bezier) -->
+                                    <path
+                                        d="M 40 45
+                                           C 72 48, 98 98, 118 137
+                                           C 138 168, 178 202, 205 206
+                                           C 218 206, 238 62, 252 45
+                                           C 390 40, 530 100, 670 168"
+                                        class="reorder-demo__stock-line"
+                                    />
+
+                                    <!-- Pedido disparado — cruza PP (~dia 4) -->
+                                    <g class="reorder-demo__callout">
+                                        <polyline points="152,70 152,78 124,128" class="reorder-demo__callout-line" marker-end="url(#reorder-callout-arrow)"/>
+                                        <text x="152" y="66" text-anchor="middle" class="reorder-demo__svg-callout">Ponto de Pedido</text>
+                                    </g>
+                                    <circle cx="118" cy="137" r="4" class="reorder-demo__trigger-dot"/>
+
+                                    <!-- Eixo Y topo -->
+                                    <text x="34" y="34" text-anchor="end" class="reorder-demo__svg-y">150</text>
+
+                                    <!-- Eixo X -->
+                                    <text x="40" y="278" text-anchor="middle" class="reorder-demo__svg-x">0</text>
+                                    <text x="355" y="278" text-anchor="middle" class="reorder-demo__svg-x">15</text>
+                                    <text x="670" y="278" text-anchor="middle" class="reorder-demo__svg-x">30</text>
+                                    <text x="355" y="294" text-anchor="middle" class="reorder-demo__svg-axis-label">Dias</text>
+                                    <text x="14" y="145" text-anchor="middle" class="reorder-demo__svg-axis-label reorder-demo__svg-axis-label--y">Un.</text>
+                                </svg>
+                                <figcaption>Curva = estoque · tracejado = PP · faixa inferior = estoque de segurança · subida = reposição</figcaption>
+                            </figure>
+
+                            <div class="reorder-demo__legend">
+                                <span class="reorder-demo__pill"><strong>Consumo</strong> 15 un/dia (queda contínua)</span>
+                                <span class="reorder-demo__pill"><strong>PP</strong> dispara pedido ao cruzar 80 un</span>
+                                <span class="reorder-demo__pill"><strong>Lead time</strong> 4 dias até a entrega chegar</span>
+                            </div>
+
+                            <div class="reorder-demo__formula">
+                                <p class="reorder-demo__formula-title">Fórmula</p>
+                                <p class="reorder-demo__formula-text">PP = (Consumo médio diário × Lead Time) + Estoque de Segurança</p>
+                                <p class="reorder-demo__formula-example">PP = (15 × 4) + 20 = <strong>80 un</strong></p>
+                            </div>
+                        </section>
+
+                        <section class="svc-modal__demo turnover-demo">
+                            <h3 class="svc-modal__demo-title">Giro de Estoque</h3>
+                            <p class="svc-modal__demo-text">Quantas vezes o estoque gira no ano — quanto maior, menos capital parado em prateleira.</p>
+                            <div class="turnover-demo__kpi">
+                                <p class="turnover-demo__value">6,2<span class="turnover-demo__unit">x/ano</span></p>
+                                <p class="turnover-demo__label">Giro médio</p>
+                            </div>
+                            <figure class="turnover-demo__chart" aria-label="Comparativo de giro por produto">
+                                <div class="turnover-demo__bars">
+                                    <div class="turnover-demo__row"><span class="turnover-demo__name">Parafuso M8</span><span class="turnover-demo__track"><span class="turnover-demo__fill" style="width:92%"></span></span><span class="turnover-demo__num">8,4x</span></div>
+                                    <div class="turnover-demo__row"><span class="turnover-demo__name">Tinta 18L</span><span class="turnover-demo__track"><span class="turnover-demo__fill" style="width:68%"></span></span><span class="turnover-demo__num">6,2x</span></div>
+                                    <div class="turnover-demo__row"><span class="turnover-demo__name">Fita isolante</span><span class="turnover-demo__track"><span class="turnover-demo__fill turnover-demo__fill--mid" style="width:48%"></span></span><span class="turnover-demo__num">4,4x</span></div>
+                                    <div class="turnover-demo__row"><span class="turnover-demo__name">Lixa fina</span><span class="turnover-demo__track"><span class="turnover-demo__fill turnover-demo__fill--low" style="width:28%"></span></span><span class="turnover-demo__num">2,6x</span></div>
+                                </div>
+                                <figcaption>Barras = giro anual · referência = 9,1x (Parafuso M8)</figcaption>
+                            </figure>
+                        </section>
+
+                        <section class="svc-modal__demo alerts-demo">
+                            <h3 class="svc-modal__demo-title">Alertas de Ruptura</h3>
+                            <p class="svc-modal__demo-text">Produtos que vão zerar antes da próxima entrega — prioridade de compra automática.</p>
+                            <ul class="alerts-demo__list">
+                                <li class="alerts-demo__item"><span class="alerts-demo__badge alerts-demo__badge--critical">Crítico</span><span class="alerts-demo__text"><strong>Parafuso M8</strong> — 3 dias até zerar</span></li>
+                                <li class="alerts-demo__item"><span class="alerts-demo__badge alerts-demo__badge--critical">Crítico</span><span class="alerts-demo__text"><strong>Arruela 8mm</strong> — 4 dias até zerar</span></li>
+                                <li class="alerts-demo__item"><span class="alerts-demo__badge alerts-demo__badge--warn">Atenção</span><span class="alerts-demo__text"><strong>Tinta branca 18L</strong> — 8 dias até zerar</span></li>
+                            </ul>
+                            <p class="alerts-demo__foot">Alertas calculados com consumo médio + lead time do fornecedor.</p>
+                        </section>
+
+                        <ul class="svc-modal__features">
+                            <li><strong>Ponto de reposição</strong> e estoque de segurança automáticos</li>
+                            <li><strong>Giro de estoque</strong> e cobertura em dias por produto</li>
+                            <li>Entrada, saída e baixa com rastreio (FIFO / lote)</li>
+                            <li>Inventário cíclico e alerta de ruptura ou excesso</li>
+                            <li>Dashboard: top produtos, parados e valor imobilizado</li>
+                        </ul>
+                        <p class="svc-modal__foot">Formação em Logística (IFAL) + dev — estoque que faz sentido pro negócio, não só contagem.</p>

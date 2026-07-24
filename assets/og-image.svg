@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="EC CODE — design with a human touch">
+  <rect width="1200" height="630" fill="#f0ebe3"/>
+  <rect x="48" y="48" width="1104" height="534" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+  <text x="96" y="280" fill="#1a1a1a" font-family="Arial, sans-serif" font-size="120" font-weight="700">EC CODE</text>
+  <text x="96" y="360" fill="#5a5a5a" font-family="Georgia, serif" font-size="42" font-style="italic">design with a human touch</text>
+  <text x="96" y="500" fill="#c45c3e" font-family="Arial, sans-serif" font-size="34" font-weight="600">Full Stack Developer · Edson Cavalcante</text>
+</svg>

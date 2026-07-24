@@ -1,0 +1,27 @@
+{
+  "name": "ec-code-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfólio pessoal EC CODE - Desenvolvedor Front-End / Full Stack",
+  "main": "index.html",
+  "workspaces": [
+    "apps/treino-do-dia",
+    "apps/restaurante-delivery-mockup"
+  ],
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve . -l 3000",
+    "build:treino": "npm run build -w treino-do-dia",
+    "build:restaurante": "npm run build -w restaurante-delivery-mockup",
+    "dev:restaurante-mockup": "npm run dev -w restaurante-delivery-mockup",
+    "dev:treino": "npm run dev -w treino-do-dia",
+    "clean:deps": "node scripts/clean-node-modules.mjs"
+  },
+  "keywords": [
+    "portfolio",
+    "frontend",
+    "web-development"
+  ],
+  "author": "EC CODE",
+  "license": "MIT"
+}
