@@ -1112,7 +1112,11 @@
                 });
             });
 
-            requestAnimationFrame(lockViewportHeight);
+            const scheduleLock = () => {
+                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 16));
+                idle(lockViewportHeight);
+            };
+            requestAnimationFrame(scheduleLock);
 
             grid?.querySelectorAll('img').forEach((img) => {
                 if (img.complete) return;
@@ -1146,15 +1150,79 @@
 
         async function fetchModalFragment(src) {
             if (!src) return '';
-            if (modalFragmentCache.has(src)) return modalFragmentCache.get(src);
+            const cached = modalFragmentCache.get(src);
+            if (typeof cached === 'string') return cached;
+            if (cached) return cached;
 
-            const request = fetch(src).then((response) => {
-                if (!response.ok) throw new Error(`Falha ao carregar modal: ${src}`);
-                return response.text();
-            });
+            const request = fetch(src)
+                .then((response) => {
+                    if (!response.ok) throw new Error(`Falha ao carregar modal: ${src}`);
+                    return response.text();
+                })
+                .then((html) => {
+                    modalFragmentCache.set(src, html);
+                    return html;
+                })
+                .catch((err) => {
+                    modalFragmentCache.delete(src);
+                    throw err;
+                });
 
             modalFragmentCache.set(src, request);
             return request;
+        }
+
+        function preloadModalFragment(src) {
+            if (src) fetchModalFragment(src).catch(() => {});
+        }
+
+        function prefetchHeavyWidgets() {
+            if (!treinoWidgetModule) {
+                import('./treino-do-dia/treino-do-dia.js')
+                    .then((mod) => { treinoWidgetModule = mod; })
+                    .catch(() => {});
+            }
+            ensureRestauranteCss().catch(() => {});
+            if (!restauranteWidgetModule) {
+                import('./restaurante-delivery/restaurante-delivery.js')
+                    .then((mod) => { restauranteWidgetModule = mod; })
+                    .catch(() => {});
+            }
+        }
+
+        function preloadCard(card) {
+            preloadModalFragment(card.dataset.modalSrc);
+            if (card.id === 'site-personal' || card.id === 'site-restaurante') {
+                prefetchHeavyWidgets();
+            }
+        }
+
+        function appendSvcModalTitle(card) {
+            const title = card.querySelector('h3');
+            if (!title) return;
+
+            const titleEl = document.createElement('h2');
+            titleEl.className = 'svc-modal__title';
+            titleEl.id = 'svcModalTitle';
+            titleEl.textContent = title.textContent;
+            svcBody.appendChild(titleEl);
+        }
+
+        function setSvcModalLoading(isLoading) {
+            svcBody.classList.toggle('is-loading', isLoading);
+            let loader = svcBody.querySelector('.svc-modal__loading');
+
+            if (isLoading) {
+                if (!loader) {
+                    loader = document.createElement('p');
+                    loader.className = 'svc-modal__loading';
+                    loader.textContent = 'Carregando…';
+                    svcBody.appendChild(loader);
+                }
+                return;
+            }
+
+            loader?.remove();
         }
 
         function appendModalFragment(html, container) {
@@ -1166,59 +1234,62 @@
                 .forEach((node) => container.appendChild(node.cloneNode(true)));
         }
 
-        async function renderContent(card) {
+        async function renderContentBody(card) {
             unmountTreinoWidget();
             unmountRestauranteWidget();
 
-            const title = card.querySelector('h3');
             const modalData = card.querySelector('.services-detail__modal-data');
             const modalSrc = card.dataset.modalSrc;
+            const needsNetwork = Boolean(modalSrc) && typeof modalFragmentCache.get(modalSrc) !== 'string';
 
-            renderHeader(card);
-            svcBody.innerHTML = '';
+            svcBody.querySelectorAll('.svc-modal__tag, .svc-modal__lead, .svc-modal__demo, .svc-modal__features, .svc-modal__foot, .svc-modal__list, .svc-modal__text')
+                .forEach((node) => node.remove());
 
-            if (title) {
-                const titleEl = document.createElement('h2');
-                titleEl.className = 'svc-modal__title';
-                titleEl.id = 'svcModalTitle';
-                titleEl.textContent = title.textContent;
-                svcBody.appendChild(titleEl);
-            }
+            if (needsNetwork) setSvcModalLoading(true);
 
-            if (modalData) {
-                modalData.querySelectorAll('.svc-modal__tag, .svc-modal__lead, .svc-modal__demo, .svc-modal__features, .svc-modal__foot, .svc-modal__list')
-                    .forEach((node) => svcBody.appendChild(node.cloneNode(true)));
-            } else if (modalSrc) {
-                const html = await fetchModalFragment(modalSrc);
-                appendModalFragment(html, svcBody);
-            } else {
-                const text = card.querySelector('h3 + p');
-                const list = card.querySelector('h3 ~ ul');
+            try {
+                if (modalData) {
+                    modalData.querySelectorAll('.svc-modal__tag, .svc-modal__lead, .svc-modal__demo, .svc-modal__features, .svc-modal__foot, .svc-modal__list')
+                        .forEach((node) => svcBody.appendChild(node.cloneNode(true)));
+                } else if (modalSrc) {
+                    const html = await fetchModalFragment(modalSrc);
+                    appendModalFragment(html, svcBody);
+                } else {
+                    const text = card.querySelector('h3 + p');
+                    const list = card.querySelector('h3 ~ ul');
 
-                if (text) {
-                    const p = document.createElement('p');
-                    p.className = 'svc-modal__text';
-                    p.textContent = text.textContent;
-                    svcBody.appendChild(p);
+                    if (text) {
+                        const p = document.createElement('p');
+                        p.className = 'svc-modal__text';
+                        p.textContent = text.textContent;
+                        svcBody.appendChild(p);
+                    }
+
+                    if (list) {
+                        const ul = document.createElement('ul');
+                        ul.className = 'svc-modal__list';
+                        [...list.children].forEach((li) => ul.appendChild(li.cloneNode(true)));
+                        svcBody.appendChild(ul);
+                    }
                 }
-
-                if (list) {
-                    const ul = document.createElement('ul');
-                    ul.className = 'svc-modal__list';
-                    [...list.children].forEach((li) => ul.appendChild(li.cloneNode(true)));
-                    svcBody.appendChild(ul);
-                }
+            } finally {
+                setSvcModalLoading(false);
             }
 
             if (card.id === 'site-personal') {
-                mountTreinoWidget();
+                void mountTreinoWidget();
             }
 
             if (card.id === 'site-restaurante') {
-                mountRestauranteWidget();
+                void mountRestauranteWidget();
             }
 
-            initMasonryDemo(svcBody.querySelector('.masonry-demo'));
+            const masonryRoot = svcBody.querySelector('.masonry-demo');
+            if (masonryRoot) {
+                requestAnimationFrame(() => {
+                    initMasonryDemo(masonryRoot);
+                });
+            }
         }
 
         function animateBodyIn() {
@@ -1295,14 +1366,13 @@
         }
 
         async function openSvcModal(card) {
-            lastFocusedCard = card;
+            if (isClosing) return;
 
-            try {
-                await renderContent(card);
-            } catch (err) {
-                console.error('Modal de serviço:', err);
-                return;
-            }
+            lastFocusedCard = card;
+            renderHeader(card);
+            svcBody.innerHTML = '';
+            appendSvcModalTitle(card);
+            setSvcModalLoading(true);
 
             svcModal.classList.add('open');
             svcModal.setAttribute('aria-hidden', 'false');
@@ -1310,6 +1380,16 @@
             svcBody.scrollTop = 0;
             animateOpen();
             svcClose?.focus();
+
+            try {
+                await renderContentBody(card);
+            } catch (err) {
+                console.error('Modal de serviço:', err);
+                closeSvcModal();
+                return;
+            }
+
+            animateBodyIn();
         }
 
         /* Impede Lenis de capturar wheel/touch dentro do modal */
@@ -1322,10 +1402,9 @@
             card.setAttribute('aria-haspopup', 'dialog');
             card.setAttribute('aria-controls', 'serviceDetailModal');
 
-            card.addEventListener('mouseenter', () => {
-                const src = card.dataset.modalSrc;
-                if (src) fetchModalFragment(src).catch(() => {});
-            }, { once: true, passive: true });
+            card.addEventListener('mouseenter', () => preloadCard(card), { passive: true });
+            card.addEventListener('focus', () => preloadCard(card), { passive: true });
+            card.addEventListener('touchstart', () => preloadCard(card), { passive: true });
 
             card.addEventListener('click', () => openSvcModal(card));
             card.addEventListener('keydown', (e) => {
@@ -1341,6 +1420,21 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && svcModal.classList.contains('open')) closeSvcModal();
         });
+
+        const servicesDetail = document.querySelector('.services-detail');
+        const warmCache = () => cards.forEach((card) => preloadCard(card));
+
+        if (servicesDetail && 'IntersectionObserver' in window) {
+            const warmObserver = new IntersectionObserver((entries) => {
+                if (!entries.some((entry) => entry.isIntersecting)) return;
+                warmCache();
+                warmObserver.disconnect();
+            }, { rootMargin: '120px 0px', threshold: 0.01 });
+            warmObserver.observe(servicesDetail);
+        } else {
+            const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1200));
+            idle(warmCache);
+        }
     }
 
     initServicesDetailModal();

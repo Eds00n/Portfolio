@@ -693,6 +693,18 @@ html.is-modal-open body {
 .svc-modal__body::-webkit-scrollbar-thumb:hover {
     background: rgba(26, 26, 26, 0.35);
 }
+.svc-modal__loading {
+    margin: 1.25rem auto 0;
+    max-width: 12rem;
+    color: rgba(26, 26, 26, 0.5);
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+}
+.svc-modal__body.is-loading .svc-modal__demo,
+.svc-modal__body.is-loading .svc-modal__lead,
+.svc-modal__body.is-loading .svc-modal__tag {
+    visibility: hidden;
+}
 .svc-modal__tag {
     display: inline-block;
     margin: 0 auto 0.75rem;
