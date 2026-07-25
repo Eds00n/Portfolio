@@ -4,7 +4,7 @@
  */
 window.EC_SITE = {
     /** Incremente ao publicar CSS/JS para bust de cache no GitHub Pages */
-    assetVersion: '914c7dd',
+    assetVersion: '0780407',
     name: 'EC CODE',
     owner: 'Edson Cavalcante',
     title: 'Full Stack Developer',
