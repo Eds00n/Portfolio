@@ -1199,6 +1199,41 @@
             if (src) fetchModalFragment(src).catch(() => {});
         }
 
+        let modalPreloadChain = Promise.resolve();
+
+        function queueModalPreload(src) {
+            if (!src) return;
+            if (typeof modalFragmentCache.get(src) === 'string') return;
+
+            modalPreloadChain = modalPreloadChain
+                .then(() => fetchModalFragment(src))
+                .catch(() => {});
+        }
+
+        function shouldBackgroundPreloadModals() {
+            const conn = navigator.connection;
+            if (!conn) return true;
+            if (conn.saveData) return false;
+            const slow = conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g';
+            return !slow;
+        }
+
+        function scheduleBackgroundModalPreloads() {
+            if (scheduleBackgroundModalPreloads.started) return;
+            scheduleBackgroundModalPreloads.started = true;
+            if (!shouldBackgroundPreloadModals()) return;
+
+            const onGitHubPages = location.hostname.includes('github.io');
+            const stepMs = onGitHubPages ? 900 : 200;
+            const startDelayMs = onGitHubPages ? 2400 : 600;
+
+            cards.forEach((card, index) => {
+                window.setTimeout(() => {
+                    queueModalPreload(card.dataset.modalSrc);
+                }, startDelayMs + index * stepMs);
+            });
+        }
+
         function prefetchHeavyWidgets() {
             if (!treinoWidgetModule) {
                 import('./treino-do-dia/treino-do-dia.js')
@@ -1464,25 +1499,20 @@
         });
 
         const servicesDetail = document.querySelector('.services-detail');
-        const warmCache = () => {
-            cards.forEach((card, index) => {
-                const run = () => preloadCard(card, { includeHeavy: false });
-                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 400 + index * 120));
-                idle(run);
-            });
-        };
+        const servicesGrid = document.querySelector('.services-detail__grid');
+
+        if (servicesGrid) {
+            servicesGrid.addEventListener('pointerenter', scheduleBackgroundModalPreloads, { once: true, passive: true });
+        }
 
         if (servicesDetail && 'IntersectionObserver' in window) {
             const warmObserver = new IntersectionObserver((entries) => {
                 if (!entries.some((entry) => entry.isIntersecting)) return;
                 warmObserver.disconnect();
-                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 800));
-                idle(warmCache);
-            }, { rootMargin: '40px 0px', threshold: 0.05 });
+                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1500));
+                idle(scheduleBackgroundModalPreloads);
+            }, { rootMargin: '0px 0px', threshold: 0.12 });
             warmObserver.observe(servicesDetail);
-        } else {
-            const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1200));
-            idle(warmCache);
         }
     }
 
@@ -1538,3 +1568,4 @@
         window.DevicePreview?.reset();
     });
 })();
+                                                                                                                                                                                                       
