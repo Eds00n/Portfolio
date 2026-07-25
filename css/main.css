@@ -517,6 +517,8 @@ a { color: inherit; text-decoration: none; }
 .services-detail {
     padding: clamp(3rem, 8vh, 5.5rem) 0 clamp(4rem, 9vh, 6rem);
     border-top: 1px solid rgba(26, 26, 26, 0.08);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
 }
 .services-detail__head {
     max-width: none;
@@ -553,12 +555,19 @@ a { color: inherit; text-decoration: none; }
     contain: layout style paint;
     content-visibility: auto;
     contain-intrinsic-size: auto 132px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     transition:
-        border-color 0.22s var(--ease),
-        background-color 0.22s var(--ease),
-        transform 0.22s var(--ease);
+        border-color 0.18s var(--ease),
+        background-color 0.18s var(--ease);
 }
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
+    .services-detail__item {
+        transition:
+            border-color 0.18s var(--ease),
+            background-color 0.18s var(--ease),
+            transform 0.18s var(--ease);
+    }
     .services-detail__item:hover {
         border-color: rgba(26, 26, 26, 0.14);
         background: rgba(255, 255, 255, 0.72);
@@ -1884,16 +1893,14 @@ html.is-modal-open body {
     transform: translate3d(0, 10px, 0);
 }
 .services-detail__item.svc-card.is-visible {
-    animation: svc-card-reveal 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) both;
+    animation: svc-card-reveal 0.24s ease-out var(--reveal-delay, 0ms) both;
 }
 @keyframes svc-card-reveal {
     from {
         opacity: 0;
-        transform: translate3d(0, 10px, 0);
     }
     to {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
     }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1902,6 +1909,9 @@ html.is-modal-open body {
         transform: none;
     }
     .services-detail__item.svc-card.is-visible {
+        animation: none;
+    }
+    .services-hscroll.is-track-ready .service-card {
         animation: none;
     }
 }
@@ -2037,6 +2047,20 @@ html.is-modal-open body {
 .services-hscroll.is-entrance-active .service-card {
     will-change: transform;
 }
+.services-hscroll.is-dragging .services-hscroll__track {
+    will-change: transform;
+}
+.services-hscroll.is-track-ready .service-card {
+    animation: svc-hscroll-card-in 0.35s ease-out both;
+}
+.services-hscroll.is-track-ready .service-card:nth-child(2) { animation-delay: 0.04s; }
+.services-hscroll.is-track-ready .service-card:nth-child(3) { animation-delay: 0.08s; }
+.services-hscroll.is-track-ready .service-card:nth-child(4) { animation-delay: 0.12s; }
+.services-hscroll.is-track-ready .service-card:nth-child(5) { animation-delay: 0.16s; }
+@keyframes svc-hscroll-card-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 .services-hscroll.is-dragging .service-card__diagram-label,
 .services-hscroll.is-dragging .service-card__sigla,
 .services-hscroll.is-dragging .service-card__title {
@@ -2069,7 +2093,7 @@ html.is-modal-open body {
     padding-bottom: calc(0.5rem + var(--services-swing-room));
     padding-inline: clamp(18px, 4vw, 48px);
     transform: translate3d(0, 0, 0);
-    touch-action: pan-x;
+    touch-action: pan-x pinch-zoom !important;
 }
 .services-hscroll .service-card {
     --service-accent: var(--ink);

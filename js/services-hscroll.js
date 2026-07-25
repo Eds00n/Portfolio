@@ -132,165 +132,15 @@
     }
 
     function initServicesEntrance(section, track, cards, cardLayout, viewport, onReady) {
-        if (typeof ScrollTrigger === 'undefined') {
-            section.dataset.entranceReady = 'true';
-            return null;
-        }
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            gsap.set(cards, { x: '0%' });
-            cardLayout.forEach(({ inner, holeConnector, card }) => finishCardEntrance(card, inner, holeConnector, true));
-            section.dataset.entranceReady = 'true';
-            return null;
-        }
-        if (window.matchMedia('(max-width: 767px)').matches) {
-            gsap.set(cards, { x: '0%' });
-            cardLayout.forEach(({ inner, holeConnector, card }) => finishCardEntrance(card, inner, holeConnector, true));
-            section.dataset.entranceReady = 'true';
-            onReady?.();
-            return null;
-        }
-
-        section.dataset.entranceReady = 'false';
-
-        gsap.set(cards, { x: '100vw' });
-
-        cardLayout.forEach(({ inner, holeConnector }) => {
-            if (inner) {
-                setCardSwingOrigin(inner, viewport);
-                gsap.set(inner, { rotation: -4 });
-            }
-            if (holeConnector) gsap.set(holeConnector, { rotation: 4 });
+        gsap.set(cards, { x: '0%' });
+        cardLayout.forEach(({ inner, holeConnector, card }) => {
+            finishCardEntrance(card, inner, holeConnector, true);
         });
 
-        const timelines = [];
-        let cardsSlidIn = 0;
-        const entranceCardCount = cards.filter((_, index) => Boolean(cardLayout[index]?.inner)).length;
-
-        const tryEnableInteraction = () => {
-            if (section.dataset.entranceReady === 'true') return;
-            section.dataset.entranceReady = 'true';
-            section.classList.remove('is-entrance-active');
-            onReady?.();
-        };
-
-        const finishEntranceImmediate = () => {
-            timelines.forEach((tl) => tl.progress(1).kill());
-            gsap.set(cards, { x: '0%' });
-            cardLayout.forEach(({ inner, holeConnector, card }) => finishCardEntrance(card, inner, holeConnector, true));
-            tryEnableInteraction();
-        };
-
-        cards.forEach((card, index) => {
-            const inner = cardLayout[index]?.inner;
-            const holeConnector = cardLayout[index]?.holeConnector;
-            if (!inner) return;
-
-            const stagger = index * 0.08;
-            const cardTl = gsap.timeline({
-                paused: true,
-                onComplete: () => {
-                    finishCardEntrance(card, inner, holeConnector, true);
-                }
-            });
-
-            cardTl
-                .to(card, {
-                    x: '0%',
-                    duration: 0.72,
-                    ease: 'power2.out',
-                    delay: stagger,
-                    overwrite: 'auto',
-                    onComplete: () => {
-                        cardsSlidIn += 1;
-                        if (cardsSlidIn >= entranceCardCount) tryEnableInteraction();
-                    }
-                })
-                .to(inner, {
-                    rotation: 0,
-                    duration: 0.45,
-                    ease: 'power2.out',
-                    overwrite: 'auto'
-                }, '-=0.35');
-
-            if (holeConnector) {
-                cardTl.to(holeConnector, {
-                    rotation: 0,
-                    duration: 0.4,
-                    ease: 'power2.out',
-                    overwrite: 'auto'
-                }, '-=0.45');
-            }
-
-            timelines.push(cardTl);
-        });
-
-        let entranceStarted = false;
-        let scrollIdleTimer = null;
-        let scrollActive = false;
-
-        const markScrollActivity = () => {
-            scrollActive = true;
-            window.clearTimeout(scrollIdleTimer);
-            scrollIdleTimer = window.setTimeout(() => {
-                scrollActive = false;
-            }, 140);
-        };
-
-        window.addEventListener('wheel', markScrollActivity, { passive: true });
-        window.addEventListener('touchmove', markScrollActivity, { passive: true });
-        window.__lenis?.on?.('scroll', markScrollActivity);
-
-        const waitForScrollIdle = (callback) => {
-            const attempt = () => {
-                if (scrollActive) {
-                    window.requestAnimationFrame(attempt);
-                    return;
-                }
-                callback();
-            };
-            attempt();
-        };
-
-        const playEntrance = () => {
-            if (entranceStarted || !timelines.length) return;
-            if (section.dataset.entranceReady === 'true') return;
-
-            entranceStarted = true;
-            section.classList.add('is-entrance-active');
-            timelines.forEach((tl) => tl.play(0));
-        };
-
-        const scheduleEntrance = () => {
-            waitForScrollIdle(playEntrance);
-        };
-
-        ScrollTrigger.create({
-            trigger: track,
-            start: 'top 82%',
-            once: true,
-            onEnter: scheduleEntrance
-        });
-
-        const maybePlayEntrance = () => {
-            const rect = track.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.82 && rect.bottom > 0) {
-                scheduleEntrance();
-            }
-        };
-
-        requestAnimationFrame(maybePlayEntrance);
-        window.addEventListener('load', maybePlayEntrance, { once: true });
-
-        if ('IntersectionObserver' in window) {
-            const abortObserver = new IntersectionObserver(([entry]) => {
-                if (entry.isIntersecting) return;
-                if (!entranceStarted || section.dataset.entranceReady === 'true') return;
-                finishEntranceImmediate();
-            }, { threshold: 0.05 });
-            abortObserver.observe(section);
-        }
-
-        return timelines;
+        section.dataset.entranceReady = 'true';
+        section.classList.add('is-track-ready');
+        onReady?.();
+        return null;
     }
 
     function buildServicesHScroll(section) {
@@ -317,12 +167,12 @@
         let resizeTimer = null;
         let trackSnapTween = null;
 
-        const getSnapDuration = (distance) => gsap.utils.clamp(distance / 900, 0.4, 0.65);
+        const getSnapDuration = (distance) => gsap.utils.clamp(distance / 1400, 0.22, 0.38);
 
         const clampTrackX = (x) => gsap.utils.clamp(bounds.minX, bounds.maxX, x);
 
         const setTrackX = (x) => {
-            gsap.set(track, { x, force3D: true });
+            gsap.set(track, { x, force3D: true, overwrite: 'auto' });
         };
 
         const syncDraggableX = (x) => {
@@ -338,15 +188,17 @@
             return clamped;
         };
 
-        const refreshBounds = () => {
-            trackPadding = getTrackPadding(track);
-            cardLayout = cacheCardLayout(cards);
-            bounds = getTrackBounds(track, viewport, cards, trackPadding);
+        const refreshBounds = (forceLayout = false) => {
+            if (forceLayout) {
+                trackPadding = getTrackPadding(track);
+                cardLayout = cacheCardLayout(cards);
+                bounds = getTrackBounds(track, viewport, cards, trackPadding);
+            }
 
             if (!draggable) return;
 
             draggable.applyBounds({ minX: bounds.minX, maxX: bounds.maxX });
-            applyTrackX(gsap.getProperty(track, 'x'));
+            applyTrackX(clampTrackX(draggable.x));
         };
 
         const bindLenisPause = () => {
@@ -400,7 +252,7 @@
             trackSnapTween = gsap.to(track, {
                 x: targetX,
                 duration,
-                ease: 'power3.out',
+                ease: 'power2.out',
                 overwrite: true,
                 force3D: true,
                 onUpdate: () => {
@@ -409,8 +261,10 @@
                 onComplete: () => {
                     applyTrackX(targetX);
                     trackSnapTween = null;
+                    track.style.willChange = 'auto';
                 }
             });
+            track.style.willChange = 'transform';
         };
 
         const snapToIndex = (index) => {
@@ -420,8 +274,8 @@
             trackSnapTween?.kill();
             trackSnapTween = gsap.to(track, {
                 x: targetX,
-                duration: 0.45,
-                ease: 'power3.out',
+                duration: 0.32,
+                ease: 'power2.out',
                 overwrite: true,
                 force3D: true,
                 onUpdate: () => {
@@ -430,8 +284,10 @@
                 onComplete: () => {
                     applyTrackX(targetX);
                     trackSnapTween = null;
+                    track.style.willChange = 'auto';
                 }
             });
+            track.style.willChange = 'transform';
         };
 
         const initKeyboardNav = () => {
@@ -479,9 +335,10 @@
                 bounds: { minX: bounds.minX, maxX: bounds.maxX },
                 inertia: false,
                 dragClickables: true,
-                edgeResistance: 1,
-                dragResistance: 0,
-                minimumMovement: 2,
+                edgeResistance: 0.65,
+                dragResistance: 0.05,
+                minimumMovement: 4,
+                allowNativeTouchScrolling: true,
                 cursor: 'inherit',
                 activeCursor: 'grabbing',
                 zIndexBoost: false,
@@ -490,9 +347,9 @@
                     dragStarted = false;
                     trackSnapTween?.kill();
                     trackSnapTween = null;
-                    refreshBounds();
                     section.classList.add('is-dragging');
-                    applyTrackX(this.x);
+                    track.style.willChange = 'transform';
+                    applyTrackX(clampTrackX(this.x));
                 },
                 onDrag() {
                     if (!dragStarted) {
@@ -512,7 +369,7 @@
                 }
             })[0];
 
-            requestAnimationFrame(refreshBounds);
+            requestAnimationFrame(() => refreshBounds(true));
 
             return () => {
                 lenisControl.destroy?.();
@@ -538,21 +395,20 @@
 
         cardLayout.forEach(({ inner }) => setCardSwingOrigin(inner, viewport));
 
-        gsap.set(track, { x: 0, force3D: true });
+        gsap.set(track, { x: 0 });
+        setTrackX(0);
 
         ctx = gsap.context(() => {
             initServicesEntrance(section, track, cards, cardLayout, viewport, enableDragging);
         }, section);
 
-        if (section.dataset.entranceReady === 'true') {
-            enableDragging();
-        }
+        enableDragging();
 
         if (!buildServicesHScroll.resizeBound) {
             buildServicesHScroll.resizeBound = true;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(refreshBounds, 120);
+                resizeTimer = setTimeout(() => refreshBounds(true), 120);
             }, { passive: true });
         }
 

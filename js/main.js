@@ -1213,8 +1213,9 @@
             }
         }
 
-        function preloadCard(card) {
+        function preloadCard(card, { includeHeavy = true } = {}) {
             preloadModalFragment(card.dataset.modalSrc);
+            if (!includeHeavy) return;
             if (card.id === 'site-personal' || card.id === 'site-restaurante') {
                 prefetchHeavyWidgets();
             }
@@ -1463,14 +1464,21 @@
         });
 
         const servicesDetail = document.querySelector('.services-detail');
-        const warmCache = () => cards.forEach((card) => preloadCard(card));
+        const warmCache = () => {
+            cards.forEach((card, index) => {
+                const run = () => preloadCard(card, { includeHeavy: false });
+                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 400 + index * 120));
+                idle(run);
+            });
+        };
 
         if (servicesDetail && 'IntersectionObserver' in window) {
             const warmObserver = new IntersectionObserver((entries) => {
                 if (!entries.some((entry) => entry.isIntersecting)) return;
-                warmCache();
                 warmObserver.disconnect();
-            }, { rootMargin: '120px 0px', threshold: 0.01 });
+                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 800));
+                idle(warmCache);
+            }, { rootMargin: '40px 0px', threshold: 0.05 });
             warmObserver.observe(servicesDetail);
         } else {
             const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1200));
@@ -1503,7 +1511,7 @@
                 const index = cards.indexOf(entry.target);
                 const row = Math.floor(index / 3);
                 const col = index % 3;
-                const delay = row * 35 + col * 25;
+                const delay = row * 20 + col * 12;
 
                 entry.target.style.setProperty('--reveal-delay', `${delay}ms`);
                 entry.target.classList.add('is-visible');
