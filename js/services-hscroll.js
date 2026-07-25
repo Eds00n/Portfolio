@@ -132,15 +132,111 @@
     }
 
     function initServicesEntrance(section, track, cards, cardLayout, viewport, onReady) {
-        gsap.set(cards, { x: '0%' });
-        cardLayout.forEach(({ inner, holeConnector, card }) => {
-            finishCardEntrance(card, inner, holeConnector, true);
+        const finish = () => {
+            section.dataset.entranceReady = 'true';
+            section.classList.remove('is-entrance-active', 'is-entrance-pending');
+            section.classList.add('is-track-ready');
+            gsap.set(cards, { clearProps: 'opacity,transform' });
+            cardLayout.forEach(({ inner, holeConnector, card }) => {
+                finishCardEntrance(card, inner, holeConnector, true);
+            });
+            onReady?.();
+        };
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            finish();
+            return null;
+        }
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            finish();
+            return null;
+        }
+        if (typeof ScrollTrigger === 'undefined') {
+            finish();
+            return null;
+        }
+
+        section.dataset.entranceReady = 'false';
+        section.classList.add('is-entrance-pending');
+
+        gsap.set(cards, { opacity: 0, x: 72, force3D: true });
+
+        cardLayout.forEach(({ inner, holeConnector }) => {
+            if (inner) {
+                setCardSwingOrigin(inner, viewport);
+                gsap.set(inner, { rotation: -5 });
+            }
+            if (holeConnector) gsap.set(holeConnector, { rotation: 5 });
         });
 
-        section.dataset.entranceReady = 'true';
-        section.classList.add('is-track-ready');
-        onReady?.();
-        return null;
+        let entranceStarted = false;
+        let entranceTween = null;
+
+        const playEntrance = () => {
+            if (entranceStarted || section.dataset.entranceReady === 'true') return;
+            entranceStarted = true;
+            section.classList.remove('is-entrance-pending');
+            section.classList.add('is-entrance-active');
+
+            const inners = cardLayout.map((item) => item.inner).filter(Boolean);
+            const holeConnectors = cardLayout.map((item) => item.holeConnector).filter(Boolean);
+
+            entranceTween = gsap.timeline({
+                defaults: { ease: 'power2.out', overwrite: 'auto' },
+                onComplete: finish
+            });
+
+            entranceTween
+                .to(cards, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.82,
+                    stagger: 0.11
+                }, 0)
+                .to(inners, {
+                    rotation: 0,
+                    duration: 0.55,
+                    stagger: 0.11
+                }, 0.08)
+                .to(holeConnectors, {
+                    rotation: 0,
+                    duration: 0.5,
+                    stagger: 0.11
+                }, 0.08);
+        };
+
+        const skipEntrance = () => {
+            entranceTween?.kill();
+            finish();
+        };
+
+        ScrollTrigger.create({
+            trigger: track,
+            start: 'top 86%',
+            once: true,
+            onEnter: playEntrance
+        });
+
+        const maybePlayEntrance = () => {
+            const rect = track.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.86 && rect.bottom > 0) {
+                playEntrance();
+            }
+        };
+
+        requestAnimationFrame(maybePlayEntrance);
+        window.addEventListener('load', maybePlayEntrance, { once: true });
+
+        if ('IntersectionObserver' in window) {
+            const abortObserver = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) return;
+                if (!entranceStarted || section.dataset.entranceReady === 'true') return;
+                skipEntrance();
+            }, { threshold: 0.04 });
+            abortObserver.observe(section);
+        }
+
+        return entranceTween;
     }
 
     function buildServicesHScroll(section) {
@@ -402,7 +498,9 @@
             initServicesEntrance(section, track, cards, cardLayout, viewport, enableDragging);
         }, section);
 
-        enableDragging();
+        if (section.dataset.entranceReady === 'true') {
+            enableDragging();
+        }
 
         if (!buildServicesHScroll.resizeBound) {
             buildServicesHScroll.resizeBound = true;
