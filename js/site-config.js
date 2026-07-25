@@ -3,6 +3,8 @@
  * Altere aqui e-mail, URLs e analytics sem refatorar o HTML.
  */
 window.EC_SITE = {
+    /** Incremente ao publicar CSS/JS para bust de cache no GitHub Pages */
+    assetVersion: '914c7dd',
     name: 'EC CODE',
     owner: 'Edson Cavalcante',
     title: 'Full Stack Developer',
