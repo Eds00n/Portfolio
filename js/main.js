@@ -1024,6 +1024,47 @@
             restauranteWidgetModule.unmountRestauranteDeliveryMockup(mountEl);
         }
 
+        function initMasonryLazyImages(root) {
+            const pending = [...root.querySelectorAll('img[data-src]')];
+            if (!pending.length) return;
+
+            const reveal = (img) => {
+                const src = img.dataset.src;
+                if (!src) return;
+                img.src = src;
+                img.removeAttribute('data-src');
+            };
+
+            if (!('IntersectionObserver' in window)) {
+                pending.forEach(reveal);
+                return;
+            }
+
+            const scrollRoot = root.closest('.svc-modal__body');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    reveal(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            }, {
+                root: scrollRoot,
+                rootMargin: '120px 0px',
+                threshold: 0.01
+            });
+
+            pending.forEach((img) => observer.observe(img));
+
+            const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 400));
+            idle(() => {
+                pending.forEach((img) => {
+                    if (!img.dataset.src) return;
+                    reveal(img);
+                    observer.unobserve(img);
+                });
+            });
+        }
+
         function initMasonryDemo(root) {
             if (!root || root.dataset.masonryInit === 'true') return;
             root.dataset.masonryInit = 'true';
@@ -1032,12 +1073,14 @@
             const cards = root.querySelectorAll('.masonry-demo__card');
             const grid = root.querySelector('.masonry-demo__grid');
             const viewport = root.querySelector('.masonry-demo__viewport');
-            const animMs = prefersReducedMotion ? 0 : 280;
+            const animMs = prefersReducedMotion ? 0 : 220;
             let resizeTimer;
 
-            function getActiveFilter() {
-                const active = root.querySelector('.masonry-demo__filter.is-active');
-                return active?.dataset.filter || 'all';
+            initMasonryLazyImages(root);
+
+            function syncViewportHeight() {
+                if (!viewport || !grid) return;
+                viewport.style.minHeight = `${grid.offsetHeight}px`;
             }
 
             function applyFilter(filter, instant = false) {
@@ -1067,26 +1110,15 @@
                     }, animMs);
                 });
 
-                if (!instant && animMs > 0) {
-                    window.setTimeout(() => grid.classList.remove('is-filtering'), animMs);
-                } else {
+                const finish = () => {
                     grid.classList.remove('is-filtering');
-                }
-            }
+                    syncViewportHeight();
+                };
 
-            function lockViewportHeight() {
-                if (!viewport || !grid) return;
-
-                const activeFilter = getActiveFilter();
-
-                cards.forEach((card) => {
-                    card.classList.remove('is-hidden', 'is-filtered-out');
-                });
-
-                viewport.style.minHeight = `${grid.offsetHeight}px`;
-
-                if (activeFilter !== 'all') {
-                    applyFilter(activeFilter, true);
+                if (!instant && animMs > 0) {
+                    window.setTimeout(finish, animMs);
+                } else {
+                    finish();
                 }
             }
 
@@ -1112,20 +1144,11 @@
                 });
             });
 
-            const scheduleLock = () => {
-                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 16));
-                idle(lockViewportHeight);
-            };
-            requestAnimationFrame(scheduleLock);
-
-            grid?.querySelectorAll('img').forEach((img) => {
-                if (img.complete) return;
-                img.addEventListener('load', lockViewportHeight, { once: true });
-            });
+            window.requestAnimationFrame(syncViewportHeight);
 
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
-                resizeTimer = window.setTimeout(lockViewportHeight, 120);
+                resizeTimer = window.setTimeout(syncViewportHeight, 120);
             }, { passive: true });
         }
 
@@ -1194,6 +1217,17 @@
             preloadModalFragment(card.dataset.modalSrc);
             if (card.id === 'site-personal' || card.id === 'site-restaurante') {
                 prefetchHeavyWidgets();
+            }
+            if (card.id === 'site-fotografia') {
+                [
+                    'assets/fotografia/retrato.jpg',
+                    'assets/fotografia/produto.jpg',
+                    'assets/fotografia/newborn.jpg'
+                ].forEach((src) => {
+                    const img = new Image();
+                    img.decoding = 'async';
+                    img.src = src;
+                });
             }
         }
 
@@ -1286,35 +1320,42 @@
 
             const masonryRoot = svcBody.querySelector('.masonry-demo');
             if (masonryRoot) {
-                requestAnimationFrame(() => {
-                    initMasonryDemo(masonryRoot);
-                });
+                const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 48));
+                idle(() => initMasonryDemo(masonryRoot));
             }
+        }
+
+        function getSvcAnimateTargets() {
+            const bodyTargets = [...svcBody.children].filter(
+                (el) => !el.classList.contains('svc-modal__loading')
+            );
+            return [...svcContext.children, ...bodyTargets];
         }
 
         function animateBodyIn() {
             if (prefersReducedMotion || typeof gsap === 'undefined') return;
 
-            gsap.fromTo([...svcContext.children, ...svcBody.children],
-                { y: 14, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.38, stagger: 0.05, ease: 'power2.out', delay: 0.08 }
+            gsap.fromTo(getSvcAnimateTargets(),
+                { y: 10, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.32, stagger: 0.04, ease: 'power2.out', delay: 0.06 }
             );
         }
 
         function animateOpen() {
             if (prefersReducedMotion || typeof gsap === 'undefined') return;
 
-            gsap.killTweensOf([svcBackdrop, svcPanel, svcContext.children, svcBody.children]);
+            const targets = getSvcAnimateTargets();
+            gsap.killTweensOf([svcBackdrop, svcPanel, ...targets]);
             gsap.set(svcBackdrop, { opacity: 0 });
-            gsap.set(svcPanel, { y: 32, scale: 0.94, opacity: 0 });
-            gsap.set([...svcContext.children, ...svcBody.children], { y: 14, opacity: 0 });
+            gsap.set(svcPanel, { y: 24, scale: 0.96, opacity: 0 });
+            gsap.set(targets, { y: 10, opacity: 0 });
 
             gsap.to(svcBackdrop, { opacity: 1, duration: 0.35, ease: 'power2.out' });
             gsap.to(svcPanel, {
                 y: 0,
                 scale: 1,
                 opacity: 1,
-                duration: 0.48,
+                duration: 0.4,
                 ease: 'power3.out'
             });
             animateBodyIn();

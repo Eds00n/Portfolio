@@ -1441,6 +1441,8 @@ html.is-modal-open body {
 }
 .masonry-demo__viewport {
     overflow: hidden;
+    min-height: 22rem;
+    contain: layout style paint;
 }
 .masonry-demo__grid {
     display: grid;
@@ -1451,7 +1453,9 @@ html.is-modal-open body {
     margin: 0;
     padding: 0;
     border: none;
-    transition: opacity 0.24s var(--ease);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 22rem;
+    transition: opacity 0.2s var(--ease);
 }
 .masonry-demo__grid.is-filtering {
     opacity: 0.72;
@@ -1477,19 +1481,27 @@ html.is-modal-open body {
 .masonry-demo__card.is-hidden {
     display: none;
 }
-.masonry-demo__card:hover {
-    box-shadow: 0 10px 24px rgba(26, 26, 26, 0.14);
-}
 .masonry-demo__card img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.35s var(--ease);
 }
-.masonry-demo__card:hover img {
-    transform: scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+    .masonry-demo__card img {
+        transition: transform 0.3s var(--ease);
+    }
+    .masonry-demo__card:hover img {
+        transform: scale(1.03);
+    }
+    .masonry-demo__card:hover {
+        box-shadow: 0 10px 24px rgba(26, 26, 26, 0.14);
+    }
+}
+.masonry-demo__card:not(:has(img[src])) {
+    background: linear-gradient(110deg, rgba(26, 26, 26, 0.06) 25%, rgba(26, 26, 26, 0.1) 50%, rgba(26, 26, 26, 0.06) 75%);
+    background-size: 200% 100%;
 }
 .masonry-demo__overlay {
     position: absolute;
